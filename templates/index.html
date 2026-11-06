@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}GarajeCOL | Domina Cada Curva{% endblock %}
+
+{% block content %}
+<!-- HERO SECTION -->
+<div class="relative bg-[#0d0e11] overflow-hidden min-h-[460px] md:min-h-[520px] flex items-center border-b border-neutral-800">
+  <!-- Background Image with Overlay -->
+  <div class="absolute inset-0 z-0">
+    <img src="/static/images/hero-home.jpg" alt="GarajeCOL Hero" class="w-full h-full object-cover object-center filter brightness-[0.75]">
+    <div class="absolute inset-0 bg-gradient-to-r from-[#0d0e11]/90 via-[#0d0e11]/50 to-transparent"></div>
+  </div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
+    <div class="max-w-2xl">
+      <!-- Badge -->
+      <div class="inline-flex items-center mb-4">
+        <span class="badge-lime font-black tracking-wider text-[11px] px-3 py-1 rounded-full">
+          TEMPORADA 2026
+        </span>
+      </div>
+
+      <!-- Main Title -->
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-black text-white sport-heading leading-none tracking-tight mb-4">
+        DOMINA CADA<br>CURVA.
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="text-neutral-200 text-sm sm:text-base mb-8 max-w-lg leading-relaxed font-normal">
+        Encuentra la moto, protección y componentes que convierten cada salida en una vuelta perfecta.
+      </p>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap items-center gap-4">
+        <a href="/motos" class="btn-garaje-lime px-6 py-3 rounded-lg text-xs font-black shadow-lg">
+          EXPLORAR MOTOS <i class="fa-solid fa-arrow-right text-xs"></i>
+        </a>
+        <a href="/comparador" class="btn-garaje-outline px-6 py-3 rounded-lg text-xs font-black shadow-lg">
+          COMPARAR AHORA <i class="fa-solid fa-arrow-right text-xs"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INSTITUTIONAL BANNER (PROYECTO INTEGRADOR ECCI) -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+  <div class="bg-white border border-neutral-200/90 rounded-3xl p-8 sm:p-14 lg:p-16 shadow-sm hover:shadow-md transition-all text-center flex flex-col items-center justify-center relative overflow-hidden">
+    
+    <!-- Insignia superior -->
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-neutral-100 border border-neutral-200/60 mb-6">
+      <i class="fa-solid fa-graduation-cap text-neutral-500 text-xs"></i>
+      <span class="text-xs font-bold uppercase tracking-widest text-neutral-600">Plataforma Académica</span>
+    </div>
+
+    <!-- Autores del Proyecto -->
+    <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-neutral-900 tracking-tight leading-snug mb-5">
+      <span class="font-normal text-neutral-500 block text-sm sm:text-base mb-1.5 uppercase tracking-wider">Creado por</span>
+      <span class="text-neutral-900">Santiago Camacho</span>
+      <span class="text-neutral-300 font-light mx-2 sm:mx-3">|</span>
+      <span class="text-neutral-900">Carlos Roldan</span>
+      <span class="text-neutral-300 font-light mx-2 sm:mx-3">|</span>
+      <span class="text-neutral-900">Samuel Ochoa</span>
+    </h2>
+
+    <!-- Título Proyecto Integrador -->
+    <div class="my-3">
+      <span class="badge-lime text-xs sm:text-sm font-black px-6 py-2.5 rounded-full uppercase tracking-wider inline-flex items-center gap-2 shadow-sm">
+        <i class="fa-solid fa-code text-xs"></i> PROYECTO INTEGRADOR
+      </span>
+    </div>
+
+    <!-- Divisor armónico -->
+    <div class="w-32 h-px bg-neutral-200 my-7"></div>
+
+    <!-- Logo Universidad ECCI (Gran formato y ordenado) -->
+    <div class="flex flex-col items-center justify-center">
+      <div class="p-3 bg-white rounded-2xl flex items-center justify-center">
+        <img src="/static/images/logo-ecci.png" alt="Universidad ECCI" class="h-28 sm:h-36 md:h-40 w-auto object-contain transition-transform duration-300 hover:scale-105 filter drop-shadow-sm" title="Universidad ECCI">
+      </div>
+      <span class="text-xs font-bold uppercase tracking-widest text-neutral-400 mt-4">
+        Universidad ECCI · Colombia
+      </span>
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION PROMO: ASESOR DE TRÁNSITO IA & FILTRAR POR INTERÉS -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    
+    <!-- Box 1: Traffic AI -->
+    <div class="bg-[#111216] border border-neutral-800 rounded-xl p-6 text-white flex flex-col justify-between">
+      <div>
+        <span class="badge-lime text-[10px] mb-3">INTELIGENCIA ARTIFICIAL</span>
+        <h3 class="text-xl font-bold sport-heading mb-2">Asesor Vial de Tránsito</h3>
+        <p class="text-xs text-neutral-400 mb-4 leading-relaxed">
+          Consulta en tiempo real el Código Nacional de Tránsito (Ley 769 de 2002), reglamentación de cascos (Res. 20203040023385) y límites de velocidad de la Ley Julián Esteban con fuentes oficiales del Ministerio de Transporte.
+        </p>
+      </div>
+      <div>
+        <button onclick="document.getElementById('openChatbotBtn').click()" class="btn-garaje-lime px-4 py-2.5 rounded text-xs font-bold w-full sm:w-auto">
+          CONSULTAR NORMAS AHORA <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Box 2: Personalization -->
+    <div class="bg-gradient-to-br from-neutral-900 to-[#191b22] border border-neutral-800 rounded-xl p-6 text-white flex flex-col justify-between">
+      <div>
+        <span class="badge-lime text-[10px] mb-3">PERSONALIZACIÓN</span>
+        <h3 class="text-xl font-bold sport-heading mb-2">Filtra según tu Interés</h3>
+        <p class="text-xs text-neutral-400 mb-4 leading-relaxed">
+          Ingresa tu presupuesto y el tipo de moto que buscas (Enduro, Urbana, Pista). Nuestro sistema te recomendará la moto ideal y el equipamiento certificado adecuado.
+        </p>
+      </div>
+      <div>
+        <a href="/personalizacion" class="btn-garaje-outline px-4 py-2.5 rounded text-xs font-bold w-full sm:w-auto">
+          CONFIGURAR MI PERFIL <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

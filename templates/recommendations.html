@@ -1,0 +1,302 @@
+{% extends "base.html" %}
+
+{% block title %}Filtrar por Interés y Presupuesto | GarajeCOL{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+  <!-- Header -->
+  <div class="max-w-3xl mb-8">
+    <span class="badge-lime text-[11px] font-black px-3 py-1 rounded-full mb-2">
+      SISTEMA DE PERSONALIZACIÓN
+    </span>
+    <h1 class="text-3xl sm:text-4xl font-black text-neutral-900 sport-heading italic tracking-tight mt-1 mb-2">
+      DESCUBRE TU CONFIGURACIÓN IDEAL
+    </h1>
+    <p class="text-xs sm:text-sm text-neutral-500 font-normal">
+      Ingresa tu presupuesto y el tipo de moto que buscas (Enduro, Urbana, Pista, Aventura). Nuestro sistema recomendará la moto ideal y el nivel de protección exacto para su cilindraje y tu nivel de experiencia.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    
+    <!-- Left: Questionnaire Form -->
+    <div class="lg:col-span-5 bg-white border border-neutral-200 rounded-2xl p-6 sm:p-8 shadow-sm">
+      <h3 class="text-base font-black text-neutral-900 sport-heading tracking-wider mb-6 pb-3 border-b border-neutral-100">
+        Tus Parámetros de Búsqueda
+      </h3>
+
+      <form id="recommendForm" class="space-y-6 text-xs">
+        
+        <!-- Step 1: Presupuesto en COP -->
+        <div>
+          <label class="block font-bold text-neutral-800 uppercase tracking-wider mb-2">
+            1. Presupuesto Máximo para Moto (COP)
+          </label>
+          <div class="space-y-3">
+            <input type="range" id="budgetRange" min="5000000" max="150000000" step="1000000" value="46000000" class="w-full accent-lime-500">
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-neutral-400 font-medium">$ 5.000.000</span>
+              <span id="budgetValueLabel" class="text-base font-black text-neutral-900 bg-neutral-100 px-3 py-1 rounded-lg">
+                $ 46.000.000 COP
+              </span>
+              <span class="text-neutral-400 font-medium">$ 150.000.000</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Tipo de Motocicleta -->
+        <div>
+          <label class="block font-bold text-neutral-800 uppercase tracking-wider mb-2">
+            2. Tipo de Motocicleta
+          </label>
+          <div class="grid grid-cols-2 gap-2.5">
+            <label class="bike-type-label border-2 border-limeBrand bg-[#f4fbe8] rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer transition-all">
+              <input type="radio" name="bike_type" value="enduro" checked class="hidden">
+              <i class="fa-solid fa-mountain text-lime-700 text-lg mb-1"></i>
+              <span class="font-bold text-neutral-900 text-[11px]">Enduro / Off-Road</span>
+            </label>
+            <label class="bike-type-label border border-neutral-200 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer hover:border-neutral-400 transition-all">
+              <input type="radio" name="bike_type" value="urbana" class="hidden">
+              <i class="fa-solid fa-city text-neutral-600 text-lg mb-1"></i>
+              <span class="font-bold text-neutral-900 text-[11px]">Urbana / Naked / Calle</span>
+            </label>
+            <label class="bike-type-label border border-neutral-200 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer hover:border-neutral-400 transition-all">
+              <input type="radio" name="bike_type" value="pista" class="hidden">
+              <i class="fa-solid fa-flag-checkered text-neutral-600 text-lg mb-1"></i>
+              <span class="font-bold text-neutral-900 text-[11px]">Pista / Deportiva</span>
+            </label>
+            <label class="bike-type-label border border-neutral-200 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer hover:border-neutral-400 transition-all">
+              <input type="radio" name="bike_type" value="aventura" class="hidden">
+              <i class="fa-solid fa-compass text-neutral-600 text-lg mb-1"></i>
+              <span class="font-bold text-neutral-900 text-[11px]">Aventura / Trail</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Step 3: Experiencia -->
+        <div>
+          <label class="block font-bold text-neutral-800 uppercase tracking-wider mb-2">
+            3. Nivel de Experiencia del Conductor
+          </label>
+          <select id="experienceSelect" class="w-full bg-white border border-neutral-300 rounded-lg px-3 py-2.5 text-xs text-neutral-800 font-medium focus:outline-none focus:border-neutral-900">
+            <option value="principiante">Principiante (Iniciando o menos de 1 año en moto)</option>
+            <option value="intermedio" selected>Intermedio (1 a 3 años rodando / viajes)</option>
+            <option value="avanzado">Piloto Avanzado / Competición / Alta Cilindrada</option>
+          </select>
+        </div>
+
+        <button type="submit" class="w-full btn-garaje-lime py-3.5 rounded-lg text-xs font-black tracking-wider uppercase shadow-md">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> GENERAR RECOMENDACIÓN
+        </button>
+
+      </form>
+    </div>
+
+    <!-- Right: Personalized Results -->
+    <div class="lg:col-span-7">
+      <div id="resultsWrapper" class="space-y-6">
+        
+        <!-- Moto match box -->
+        <div class="bg-white border border-neutral-200 rounded-2xl p-6 shadow-sm">
+          <div class="flex items-center justify-between pb-3 border-b border-neutral-100 mb-4">
+            <span class="badge-lime text-[10px] font-black" id="matchBadge">MATCH RECOMENDADO</span>
+            <span class="text-xs text-neutral-500 font-semibold" id="fitCategoryLabel">Ajustado a tu tipo y presupuesto</span>
+          </div>
+
+          <div id="recommendedMotoCard" class="grid grid-cols-1 sm:grid-cols-12 gap-5 items-center">
+            <div class="sm:col-span-5 bg-[#f8f9fa] border border-neutral-200/80 rounded-2xl overflow-hidden h-52 sm:h-56 flex items-center justify-center p-4 shadow-sm">
+              <img id="recMotoImg" src="/static/images/moto-ktm-card.jpg" alt="Moto" class="w-full h-full object-contain filter drop-shadow-sm">
+            </div>
+            <div class="sm:col-span-7 space-y-2">
+              <span id="recMotoBrand" class="text-[11px] font-black text-lime-600 uppercase tracking-wider block">KTM</span>
+              <h3 id="recMotoName" class="text-xl font-bold text-neutral-900 sport-heading italic">KTM 450 EXC-F</h3>
+              <p id="recMotoBadge" class="text-xs text-neutral-500">449 cc · 4T · 2027</p>
+              <div id="recMotoPrice" class="text-xl font-black text-neutral-900 tracking-tight">$ 45.711.000</div>
+              
+              <div class="pt-3 flex items-center gap-3">
+                <a id="recMotoLink" href="/producto/ktm-450-exc-f" class="btn-garaje-lime px-4 py-2 rounded text-xs font-bold">
+                  VER DETALLE <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </a>
+                <a id="recMotoOfficialLink" href="https://www.auteco.com.co/motos-ktm/" target="_blank" rel="noopener noreferrer" class="btn-garaje-outline px-4 py-2 rounded text-xs font-bold">
+                  PÁGINA OFICIAL <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Intelligent Safety Assessment Alert -->
+        <div id="safetyAlertBox" class="bg-[#14161c] border border-neutral-800 rounded-2xl p-5 text-white shadow-sm flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl bg-limeBrand text-black flex items-center justify-center font-black flex-shrink-0 text-base">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div>
+            <h4 id="safetyAlertTitle" class="text-xs font-black uppercase text-limeBrand tracking-wider mb-1">
+              Protección Sugerida para Cilindrada y Experiencia
+            </h4>
+            <p id="safetyAlertMsg" class="text-xs text-neutral-300 leading-relaxed font-normal">
+              Hemos adaptado el nivel de protección requerido: a mayor potencia y cilindraje, mayor es la absorción de impacto exigida para rodar con seguridad y cumplir las resoluciones del Ministerio de Transporte.
+            </p>
+          </div>
+        </div>
+
+        <!-- Gear kit recommendation (4 items: Helmet, Jacket/Suit, Gloves, Spare) -->
+        <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-6 text-white shadow-sm">
+          <h3 class="text-sm font-bold sport-heading uppercase tracking-wider mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-helmet-safety text-limeBrand"></i> Equipamiento y Componentes Sugeridos
+          </h3>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+            
+            <!-- Helmet -->
+            <div class="bg-[#181a20] border border-neutral-700/60 rounded-xl p-3 flex flex-col justify-between">
+              <div>
+                <span class="text-[10px] text-limeBrand font-bold uppercase block mb-1">Casco Certificado</span>
+                <h4 id="recHelmetName" class="font-bold text-white mb-1">AGV Pista GP RR</h4>
+                <p id="recHelmetBadge" class="text-[11px] text-neutral-400 mb-1">ECE 22.06 · FIM</p>
+                <div id="recHelmetPrice" class="text-xs font-black text-white mb-2">$ 4.237.215</div>
+              </div>
+              <a id="recHelmetLink" href="/producto/agv-pista-gp-rr" class="btn-garaje-lime px-3 py-1.5 rounded text-[10px] font-bold text-center">
+                Ver casco
+              </a>
+            </div>
+
+            <!-- Suit / Jacket -->
+            <div class="bg-[#181a20] border border-neutral-700/60 rounded-xl p-3 flex flex-col justify-between">
+              <div>
+                <span class="text-[10px] text-limeBrand font-bold uppercase block mb-1">Protección Torso</span>
+                <h4 id="recSuitName" class="font-bold text-white mb-1">Mono GP Plus V4</h4>
+                <p id="recSuitBadge" class="text-[11px] text-neutral-400 mb-1">Piel bovina CE Nivel 2</p>
+                <div id="recSuitPrice" class="text-xs font-black text-white mb-2">$ 4.950.254</div>
+              </div>
+              <a id="recSuitLink" href="/producto/alpinestars-mono-gp-plus-v4" class="btn-garaje-lime px-3 py-1.5 rounded text-[10px] font-bold text-center">
+                Ver protección
+              </a>
+            </div>
+
+            <!-- Gloves -->
+            <div class="bg-[#181a20] border border-neutral-700/60 rounded-xl p-3 flex flex-col justify-between">
+              <div>
+                <span class="text-[10px] text-limeBrand font-bold uppercase block mb-1">Guantes de Agarre</span>
+                <h4 id="recGlovesName" class="font-bold text-white mb-1">Guantes SMX-1 Air</h4>
+                <p id="recGlovesBadge" class="text-[11px] text-neutral-400 mb-1">Piel & Carbono CE</p>
+                <div id="recGlovesPrice" class="text-xs font-black text-white mb-2">$ 290.000</div>
+              </div>
+              <a id="recGlovesLink" href="/producto/guantes-alpinestars-smx1" class="btn-garaje-lime px-3 py-1.5 rounded text-[10px] font-bold text-center">
+                Ver guantes
+              </a>
+            </div>
+
+            <!-- Spare -->
+            <div class="bg-[#181a20] border border-neutral-700/60 rounded-xl p-3 flex flex-col justify-between">
+              <div>
+                <span class="text-[10px] text-limeBrand font-bold uppercase block mb-1">Repuesto Óptimo</span>
+                <h4 id="recSpareName" class="font-bold text-white mb-1">Kit Cadena ZVM-X</h4>
+                <p id="recSpareBadge" class="text-[11px] text-neutral-400 mb-1">Sellos X-Ring Reforzados</p>
+                <div id="recSparePrice" class="text-xs font-black text-white mb-2">$ 740.000</div>
+              </div>
+              <a id="recSpareLink" href="/producto/did-kit-cadena-zvm-x" class="btn-garaje-lime px-3 py-1.5 rounded text-[10px] font-bold text-center">
+                Ver repuesto
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const budgetRange = document.getElementById('budgetRange');
+  const budgetLabel = document.getElementById('budgetValueLabel');
+
+  budgetRange.addEventListener('input', function() {
+    const val = parseInt(this.value);
+    budgetLabel.textContent = formatCOP(val) + ' COP';
+  });
+
+  document.querySelectorAll('.bike-type-label').forEach(label => {
+    label.addEventListener('click', function() {
+      document.querySelectorAll('.bike-type-label').forEach(l => {
+        l.className = 'bike-type-label border border-neutral-200 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer hover:border-neutral-400 transition-all';
+      });
+      this.className = 'bike-type-label border-2 border-limeBrand bg-[#f4fbe8] rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer transition-all';
+    });
+  });
+
+  document.getElementById('recommendForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const budget = parseInt(budgetRange.value);
+    const bikeTypeInput = document.querySelector('input[name="bike_type"]:checked');
+    const bikeType = bikeTypeInput ? bikeTypeInput.value : 'enduro';
+    const experience = document.getElementById('experienceSelect').value;
+
+    try {
+      const res = await fetch('/api/recommend', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({budget, bike_type: bikeType, experience})
+      });
+      const data = await res.json();
+      
+      if (data.moto) {
+        const best = data.moto;
+        document.getElementById('recMotoImg').src = best.image;
+        document.getElementById('recMotoBrand').textContent = best.brand;
+        document.getElementById('recMotoName').textContent = best.name;
+        document.getElementById('recMotoBadge').textContent = best.badge;
+        document.getElementById('recMotoPrice').textContent = best.price_formatted;
+        document.getElementById('recMotoLink').href = '/producto/' + best.id;
+        document.getElementById('recMotoOfficialLink').href = best.official_url;
+      }
+
+      if (data.safety_alert) {
+        document.getElementById('safetyAlertTitle').textContent = data.safety_alert.title;
+        document.getElementById('safetyAlertMsg').textContent = data.safety_alert.message;
+      }
+
+      if (data.suggested_helmet) {
+        const h = data.suggested_helmet;
+        document.getElementById('recHelmetName').textContent = h.name;
+        document.getElementById('recHelmetBadge').textContent = h.badge;
+        document.getElementById('recHelmetPrice').textContent = h.price_formatted;
+        document.getElementById('recHelmetLink').href = '/producto/' + h.id;
+      }
+
+      if (data.suggested_suit) {
+        const s = data.suggested_suit;
+        document.getElementById('recSuitName').textContent = s.name;
+        document.getElementById('recSuitBadge').textContent = s.badge;
+        document.getElementById('recSuitPrice').textContent = s.price_formatted;
+        document.getElementById('recSuitLink').href = '/producto/' + s.id;
+      }
+
+      if (data.suggested_gloves) {
+        const g = data.suggested_gloves;
+        document.getElementById('recGlovesName').textContent = g.name;
+        document.getElementById('recGlovesBadge').textContent = g.badge;
+        document.getElementById('recGlovesPrice').textContent = g.price_formatted;
+        document.getElementById('recGlovesLink').href = '/producto/' + g.id;
+      }
+
+      if (data.suggested_spare) {
+        const sp = data.suggested_spare;
+        document.getElementById('recSpareName').textContent = sp.name;
+        document.getElementById('recSpareBadge').textContent = sp.badge;
+        document.getElementById('recSparePrice').textContent = sp.price_formatted;
+        document.getElementById('recSpareLink').href = '/producto/' + sp.id;
+      }
+
+    } catch (err) {
+      console.error(err);
+    }
+  });
+</script>
+{% endblock %}

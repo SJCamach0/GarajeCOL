@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear Cuenta | GarajeCOL</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            limeBrand: '#82F500',
+            limeBrandHover: '#72DB00',
+            darkBrand: '#0D0E11',
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/static/css/custom.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="bg-white min-h-screen antialiased flex flex-col md:flex-row overflow-x-hidden">
+
+  <!-- LEFT COLUMN: Full Screen Immersive Art Banner -->
+  <div class="relative w-full md:w-1/2 lg:w-7/12 min-h-[380px] md:min-h-screen flex flex-col justify-between p-8 sm:p-12 lg:p-16 text-white overflow-hidden bg-[#0d0e11]">
+    
+    <!-- Background Image -->
+    <img src="/static/images/login-art.jpg" alt="GarajeCOL Taller" class="absolute inset-0 w-full h-full object-cover object-center filter brightness-[0.82] contrast-[1.05]">
+    
+    <!-- Gradient Overlay for Contrast & Readability -->
+    <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/60 z-0"></div>
+
+    <!-- Top Branding -->
+    <div class="relative z-10 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2.5 group">
+        <div class="w-10 h-10 bg-limeBrand rounded-xl flex items-center justify-center text-black font-black text-xl shadow-lg transition-transform group-hover:scale-105">
+          G
+        </div>
+        <span class="brand-font italic font-black text-2xl sm:text-3xl tracking-tight text-white drop-shadow-md">GarajeCOL</span>
+      </a>
+      <a href="/" class="text-xs text-white/80 hover:text-white flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 transition-all hover:bg-black/60">
+        <i class="fa-solid fa-arrow-left text-[10px]"></i> <span>Inicio</span>
+      </a>
+    </div>
+
+    <!-- Center/Bottom Message -->
+    <div class="relative z-10 max-w-lg mt-auto pt-16">
+      <span class="badge-lime text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider mb-3 inline-block shadow-sm">
+        Únete a la Comunidad
+      </span>
+      <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black italic sport-heading leading-tight mb-3 text-white drop-shadow-md">
+        Compara, elige y rueda con total seguridad.
+      </h2>
+      <div class="w-20 h-1 bg-limeBrand rounded-full mb-3"></div>
+      <p class="text-xs sm:text-sm text-neutral-300 font-normal leading-relaxed">
+        Crea tu cuenta gratuita para guardar comparativas de hasta 3 productos, armar tu lista de favoritos y recibir recomendaciones personalizadas para tus rutas.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- RIGHT COLUMN: Registration Form -->
+  <div class="w-full md:w-1/2 lg:w-5/12 min-h-screen bg-white flex items-center justify-center p-8 sm:p-12 lg:p-16">
+    <div class="max-w-md w-full mx-auto">
+      
+      <!-- Welcome badge -->
+      <span class="text-xs font-black text-lime-600 tracking-wider uppercase block mb-2">
+        NUEVO USUARIO
+      </span>
+
+      <!-- Title -->
+      <h1 class="text-3xl sm:text-4xl font-black text-neutral-900 sport-heading italic mb-2 tracking-tight">
+        CREAR CUENTA
+      </h1>
+
+      <p class="text-xs text-neutral-500 mb-8 font-normal">
+        Completa tus datos para unirte a GarajeCOL Colombia.
+      </p>
+
+      <!-- Alert box -->
+      <div id="registerAlert" class="hidden mb-5 p-3.5 rounded-xl text-xs font-medium"></div>
+
+      <!-- Form -->
+      <form id="registerForm" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
+            Nombre completo
+          </label>
+          <div class="relative">
+            <i class="fa-solid fa-user absolute left-4 top-3.5 text-neutral-400 text-sm"></i>
+            <input type="text" id="regName" required placeholder="Santiago Camacho" 
+                   class="w-full pl-11 pr-4 py-3 rounded-xl border border-neutral-300 bg-white text-neutral-900 text-sm focus:outline-none focus:border-neutral-900 focus:ring-1 focus:ring-neutral-900 transition-colors shadow-sm">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
+            Correo electrónico
+          </label>
+          <div class="relative">
+            <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-neutral-400 text-sm"></i>
+            <input type="email" id="regEmail" required placeholder="tu-correo@ejemplo.com" 
+                   class="w-full pl-11 pr-4 py-3 rounded-xl border border-neutral-300 bg-white text-neutral-900 text-sm focus:outline-none focus:border-neutral-900 focus:ring-1 focus:ring-neutral-900 transition-colors shadow-sm">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1.5">
+            Contraseña
+          </label>
+          <div class="relative">
+            <i class="fa-solid fa-lock absolute left-4 top-3.5 text-neutral-400 text-sm"></i>
+            <input type="password" id="regPassword" required placeholder="Mínimo 6 caracteres" minlength="6"
+                   class="w-full pl-11 pr-4 py-3 rounded-xl border border-neutral-300 bg-white text-neutral-900 text-sm focus:outline-none focus:border-neutral-900 focus:ring-1 focus:ring-neutral-900 transition-colors shadow-sm">
+          </div>
+        </div>
+
+        <div class="text-xs text-neutral-500 pt-1">
+          Al registrarte aceptas las políticas de uso y orientación informativa de GarajeCOL.
+        </div>
+
+        <button type="submit" class="w-full btn-garaje-lime py-3.5 rounded-xl text-xs font-black tracking-wider uppercase shadow-md mt-4 hover:shadow-lg transition-all">
+          CREAR MI CUENTA <i class="fa-solid fa-arrow-right text-xs"></i>
+        </button>
+      </form>
+
+      <!-- Bottom login link -->
+      <div class="text-center mt-8 text-xs text-neutral-500">
+        ¿Ya tienes una cuenta? 
+        <a href="/login" class="font-bold text-neutral-900 hover:text-lime-600 underline ml-1">
+          Iniciar sesión
+        </a>
+      </div>
+
+      <!-- Back to home -->
+      <div class="text-center mt-4 text-xs">
+        <a href="/" class="text-neutral-400 hover:text-neutral-700 transition-colors inline-flex items-center gap-1.5">
+          <i class="fa-solid fa-arrow-left text-[10px]"></i> Volver a la página principal
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const name = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPassword').value;
+      const alertBox = document.getElementById('registerAlert');
+
+      try {
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({name, email, password})
+        });
+        const data = await res.json();
+        if (res.ok) {
+          alertBox.className = "mb-5 p-3.5 rounded-xl text-xs font-medium bg-green-50 text-green-800 border border-green-200 block";
+          alertBox.textContent = data.message || "Cuenta creada con éxito. Redirigiendo...";
+          localStorage.setItem('garajecol_user', JSON.stringify(data.user));
+          setTimeout(() => {
+            window.location.href = '/';
+          }, 800);
+        } else {
+          alertBox.className = "mb-5 p-3.5 rounded-xl text-xs font-medium bg-red-50 text-red-800 border border-red-200 block";
+          alertBox.textContent = data.error || "Error al crear la cuenta.";
+        }
+      } catch (err) {
+        alertBox.className = "mb-5 p-3.5 rounded-xl text-xs font-medium bg-red-50 text-red-800 border border-red-200 block";
+        alertBox.textContent = "Error de conexión.";
+      }
+    });
+  </script>
+</body>
+</html>
