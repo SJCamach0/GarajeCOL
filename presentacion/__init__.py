@@ -1,12 +1,5 @@
-"""
-=============================================================================
-CAPA DE PRESENTACIÓN — GarajeCOL
-=============================================================================
-Módulo principal de la capa de presentación (Web / Interfaz de Usuario).
-Contiene la aplicación Flask, el enrutamiento HTTP, la inyección de contexto
-y el renderizado de plantillas HTML y recursos estáticos.
-=============================================================================
-"""
+# Capa de presentacion: contiene la aplicacion web, las pantallas y los estilos visuales.
+# Conecta la navegacion del usuario con las respuestas del servidor Flask.
 
 from presentacion.app import app
 

@@ -1,32 +1,11 @@
-"""
-=============================================================================
-CAPA DE LÓGICA — Clase: Chatbot
-=============================================================================
-Pilar POO: ENCAPSULAMIENTO.
-
-Asistente virtual de orientación normativa vial para motociclistas en Colombia.
-Maneja el historial de consultas, la sesión del usuario y la base de
-conocimiento de la Ley 769 de 2002 (Código Nacional de Tránsito), Ley 2251
-de 2022 (Ley Julián Esteban) y resoluciones del Ministerio de Transporte.
-=============================================================================
-"""
+# Asistente virtual que responde dudas sobre las normas de transito de Colombia.
+# Busca palabras clave en la pregunta del usuario y devuelve el articulo correspondiente.
 
 from typing import List, Dict, Any, Optional
 
 
 class Chatbot:
-    """
-    Clase Chatbot según el modelado de diseño GarajeCOL.
-
-    ENCAPSULAMIENTO: Atributos privados con nomenclatura estándar (camelCase).
-    La base de conocimiento legal se administra internamente sin permitir
-    modificaciones directas no autorizadas.
-
-    Atributos privados:
-        _lstHistorialConsultas (list): Registro histórico de preguntas realizadas.
-        _intIdentificadorSesion (int): Identificador numérico de la sesión.
-        _objBaseConocimientoLegal (dict): Contenido de la normativa colombiana.
-    """
+    # Maneja la conversacion y busca las leyes viales para motociclistas.
 
     def __init__(
         self,
@@ -34,60 +13,33 @@ class Chatbot:
         intIdentificadorSesion: int = 1,
         objBaseConocimientoLegal: Optional[Dict[str, Any]] = None,
     ) -> None:
-        """
-        Constructor de la clase Chatbot.
-        """
+        # Guarda el historial de preguntas, el id de sesion y las normas de transito.
         self._lstHistorialConsultas: List[Dict[str, Any]] = lstHistorialConsultas or []
         self._intIdentificadorSesion: int = intIdentificadorSesion
         self._objBaseConocimientoLegal: Dict[str, Any] = objBaseConocimientoLegal or {}
 
-    # =========================================================================
-    # PROPIEDADES EN CAMELCASE (ENCAPSULAMIENTO)
-    # =========================================================================
-
+    # Propiedades para leer el historial, la sesion y la base de normas.
     @property
     def lstHistorialConsultas(self) -> List[Dict[str, Any]]:
-        """Historial de consultas de la sesión."""
         return list(self._lstHistorialConsultas)
 
     @property
     def intIdentificadorSesion(self) -> int:
-        """ID de sesión del chatbot."""
         return self._intIdentificadorSesion
 
     @property
     def objBaseConocimientoLegal(self) -> Dict[str, Any]:
-        """Base de conocimiento cargada."""
         return dict(self._objBaseConocimientoLegal)
 
-    # Aliases de compatibilidad
     historial_consultas = lstHistorialConsultas
     identificador_sesion = intIdentificadorSesion
 
-    # =========================================================================
-    # MÉTODOS EN CAMELCASE (REQUISITOS DEL DOCUMENTO DE DISEÑO)
-    # =========================================================================
-
+    # Recibe los datos del archivo JSON para que el asistente tenga las leyes en memoria.
     def cargarBaseConocimiento(self, dictDatos: Dict[str, Any]) -> None:
-        """
-        Carga la base de datos legal en la memoria interna del chatbot.
-
-        Parámetros:
-            dictDatos (dict): Diccionario con topics, fuentes y disclaimer.
-        """
         self._objBaseConocimientoLegal = dictDatos
 
+    # Busca en las leyes colombianas el tema mas parecido a la pregunta del usuario.
     def orientarSobreCodigoTransito(self, strConsulta: str) -> Dict[str, Any]:
-        """
-        Analiza la consulta del usuario, identifica el artículo o tema
-        más relevante del Código Nacional de Tránsito y estructura la respuesta.
-
-        Parámetros:
-            strConsulta (str): Pregunta o inquietud del motociclista.
-
-        Retorna:
-            Dict[str, Any]: Respuesta formateada, fuente oficial, disclaimer y fuentes.
-        """
         consultaLimpia = strConsulta.lower().strip()
         temas = self._objBaseConocimientoLegal.get("topics", [])
         disclaimer = self._objBaseConocimientoLegal.get("disclaimer", "")
@@ -143,7 +95,6 @@ class Chatbot:
                 "url": "https://www.mintransporte.gov.co",
             }
 
-        # Registrar en el historial de la sesión
         self._lstHistorialConsultas.append({
             "consulta": strConsulta,
             "temaEncontrado": mejorTema["title"] if mejorTema else "General",
@@ -156,44 +107,19 @@ class Chatbot:
             "all_sources": fuentesOficiales,
         }
 
+    # Devuelve solo el texto de la respuesta a la pregunta del usuario.
     def responderConsultasLegales(self, strPregunta: str) -> str:
-        """
-        Método de alto nivel: responde directamente con el texto explicativo.
-
-        Parámetros:
-            strPregunta (str): Pregunta jurídica formulada.
-
-        Retorna:
-            str: Respuesta textual orientadora.
-        """
         resultado = self.orientarSobreCodigoTransito(strPregunta)
         return resultado["reply"]
 
+    # Busca la informacion de un articulo especifico del codigo de transito.
     def buscarArticulosCodigo(self, intArticulo: int) -> str:
-        """
-        Busca un artículo específico por su número en el Código Nacional de Tránsito.
+        return self.responderConsultasLegales(f"articulo {intArticulo}")
 
-        Parámetros:
-            intArticulo (int): Número del artículo a buscar.
-
-        Retorna:
-            str: Detalle de la norma aplicable.
-        """
-        return self.responderConsultasLegales(f"artículo {intArticulo}")
-
+    # Explica en palabras sencillas una resolucion del ministerio de transporte.
     def interpretarNormasViales(self, strNorma: str) -> str:
-        """
-        Interpreta una norma o resolución específica del Ministerio de Transporte.
-
-        Parámetros:
-            strNorma (str): Nombre o referencia de la norma.
-
-        Retorna:
-            str: Interpretación comprensible de la norma.
-        """
         return self.responderConsultasLegales(strNorma)
 
-    # Aliases snake_case para compatibilidad
     cargar_base_conocimiento = cargarBaseConocimiento
     orientar_sobre_codigo_transito = orientarSobreCodigoTransito
     responder_consultas_legales = responderConsultasLegales
@@ -201,4 +127,4 @@ class Chatbot:
     interpretar_normas_viales = interpretarNormasViales
 
     def __str__(self) -> str:
-        return f"Chatbot(Sesión {self._intIdentificadorSesion}, {len(self._lstHistorialConsultas)} consultas)"
+        return f"Chatbot(Sesion {self._intIdentificadorSesion}, {len(self._lstHistorialConsultas)} consultas)"

@@ -1,57 +1,29 @@
-"""
-=============================================================================
-CAPA DE LÓGICA — Servicio: ChatbotService
-=============================================================================
-Conecta el modelo Chatbot con el repositorio TrafficCodeRepository,
-cargando la base de conocimiento legal colombiana y procesando
-las consultas viales de los usuarios.
-=============================================================================
-"""
+# Servicio que conecta el asistente virtual con las leyes de transito guardadas.
+# Recibe las preguntas del chat y entrega la explicacion legal y fuentes oficiales.
 
 from typing import Dict, Any, Optional
 from logica.chatbot import Chatbot
 
 
 class ChatbotService:
-    """
-    Servicio de la lógica de negocio para la asistencia normativa vial.
-
-    Atributos privados:
-        _objRepo: Repositorio de la normativa legal.
-        _objChatbot (Chatbot): Modelo de dominio que procesa las consultas.
-    """
+    # Servicio que atiende las preguntas de normas viales que hacen los usuarios.
 
     def __init__(self, objRepo: Optional[Any] = None) -> None:
-        """
-        Constructor del servicio de chatbot.
-        """
+        # Carga las leyes desde el repositorio de transito en la memoria del asistente.
         if objRepo is None:
             from datos.traffic_code_repository import TrafficCodeRepository
             objRepo = TrafficCodeRepository()
         self._objRepo = objRepo
         self._objChatbot: Chatbot = Chatbot()
 
-        # Inyectar la base de conocimiento legal en el modelo Chatbot
         datosLegales = self._objRepo.obtenerDatosCompletos()
         self._objChatbot.cargarBaseConocimiento(datosLegales)
 
+    # Revisa que la pregunta no este vacia y busca la respuesta legal adecuada.
     def procesarConsulta(self, strMensaje: str) -> Dict[str, Any]:
-        """
-        Valida y procesa la consulta del usuario delegándola al modelo Chatbot.
-
-        Parámetros:
-            strMensaje (str): Texto de la consulta vial.
-
-        Retorna:
-            Dict[str, Any]: Respuesta estructurada con fundamentación y fuentes.
-
-        Lanza:
-            ValueError: Si el mensaje está vacío.
-        """
         if not strMensaje or not strMensaje.strip():
-            raise ValueError("Por favor escribe tu consulta sobre las normas de tránsito.")
+            raise ValueError("Por favor escribe tu consulta sobre las normas de transito.")
 
         return self._objChatbot.orientarSobreCodigoTransito(strMensaje)
 
-    # Alias snake_case
     procesar_consulta = procesarConsulta

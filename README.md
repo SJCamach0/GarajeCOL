@@ -40,32 +40,34 @@ http://127.0.0.1:5000
 ```
 GarajeCOL/
   app.py                     Punto de entrada principal
+  iniciar_servidor.bat       Acceso directo para ejecutar el proyecto
+  requirements.txt           Librerias necesarias (Flask)
+  README.md                  Documentacion general del proyecto
   datos/                     Capa de acceso a datos
-    productos.json
-    traffic_code.json
-    producto_repository.py
-    traffic_code_repository.py
+    productos.json           Base de datos de productos en formato JSON
+    traffic_code.json        Normas y leyes de transito en formato JSON
+    producto_repository.py   Lectura y carga de productos
+    traffic_code_repository.py Lectura de las leyes de transito
   logica/                    Capa de logica de negocio y clases POO
-    modelos/
-      Producto.py
-      Motocicleta.py
-      Equipamiento.py
-      Repuesto.py
-      Usuario.py
-      Catalogo.py
-      ComparadorProductos.py
-      Personalizacion.py
-      Chatbot.py
-      PlataformaWeb.py
-    catalogo_service.py
-    recomendacion_service.py
-    comparador_service.py
-    chatbot_service.py
-    auth_service.py
+    producto.py              Clase base de productos
+    motocicleta.py           Clase especializada para motos
+    equipamiento.py          Clase para cascos y prendas de seguridad
+    repuesto.py              Clase para repuestos mecanicos
+    usuario.py               Clase para gestionar usuarios y favoritos
+    catalogo.py              Coleccion y filtros de productos
+    comparador_productos.py  Logica de comparacion frente a frente
+    personalizacion.py       Preferencias de presupuesto y tipo de moto
+    chatbot.py               Asistente de normas viales
+    plataforma_web.py        Integracion de usuarios y catalogo
+    catalogo_service.py      Servicio de busquedas y filtros
+    recomendacion_service.py Servicio de recomendacion por presupuesto
+    comparador_service.py    Servicio para la tabla comparativa
+    chatbot_service.py       Servicio para responder preguntas del chat
+    auth_service.py          Servicio de autenticacion y registro
   presentacion/              Capa de presentacion (Flask + HTML)
-    app.py
-    templates/
-    static/
+    app.py                   Rutas web y controladores HTTP
+    templates/               Pantallas HTML con diseno visual
+    static/                  Imagenes, estilos CSS y scripts JS
 ```
 
 ---

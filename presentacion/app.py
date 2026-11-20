@@ -1,52 +1,22 @@
-"""
-=============================================================================
-CAPA DE PRESENTACIÓN — Servidor Web Flask (app.py)
-=============================================================================
-Responsabilidad ÚNICA: Gestionar la interacción con el usuario a través
-de la web (HTTP, renderizado HTML Jinja2 y respuestas JSON para APIs).
-
-ESTRICTA SEPARACIÓN DE CAPAS:
-  - NO accede a archivos JSON directamente (tarea de la capa de DATOS).
-  - NO ejecuta reglas de filtrado o comparaciones complejas (tarea de LÓGICA).
-  - Toda la operación es delegada a los Servicios de la capa 'logica'.
-
-Estructura de 3 Capas:
-  ┌────────────────────────────────────────────────────────┐
-  │  PRESENTACIÓN (presentacion/app.py + templates + JS)   │
-  ├────────────────────────────────────────────────────────┤
-  │  LÓGICA (logica/ - Modelos POO y Servicios de Negocio) │
-  ├────────────────────────────────────────────────────────┤
-  │  DATOS (datos/ - Repositorios y Archivos JSON)         │
-  └────────────────────────────────────────────────────────┘
-=============================================================================
-"""
+# Servidor web Flask para la presentacion de GarajeCOL.
+# Muestra las paginas en el navegador y responde a las peticiones del usuario.
 
 import os
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 
-# Importación de la Capa de Lógica de Negocio
+# Servicios de la logica que resuelven las peticiones de la pagina.
 from logica.catalogo_service import CatalogoService
 from logica.recomendacion_service import RecomendacionService
 from logica.comparador_service import ComparadorService
 from logica.chatbot_service import ChatbotService
 from logica.auth_service import AuthService
 
-# =============================================================================
-# INICIALIZACIÓN Y CONFIGURACIÓN DE RUTAS DE PRESENTACIÓN
-# =============================================================================
-
+# Rutas de las carpetas de pantallas HTML y estilos visuales.
 directorioPresentacion = os.path.dirname(os.path.abspath(__file__))
-directorioRaiz = os.path.dirname(directorioPresentacion)
-
-# Configuración de carpetas de plantillas y recursos estáticos
 rutaTemplates = os.path.join(directorioPresentacion, "templates")
-if not os.path.exists(rutaTemplates):
-    rutaTemplates = os.path.join(directorioRaiz, "templates")
-
 rutaStatic = os.path.join(directorioPresentacion, "static")
-if not os.path.exists(rutaStatic):
-    rutaStatic = os.path.join(directorioRaiz, "static")
 
+# Inicializacion de la aplicacion Flask con sus carpetas correspondientes.
 app = Flask(
     __name__,
     template_folder=rutaTemplates,
@@ -54,7 +24,7 @@ app = Flask(
 )
 app.secret_key = "garajecol_secret_production_key_2026"
 
-# Inyección de dependencias: instanciación de servicios de la capa de lógica
+# Instancias de los servicios para consultar datos y aplicar reglas del sistema.
 servicioCatalogo = CatalogoService()
 servicioRecomendacion = RecomendacionService()
 servicioComparador = ComparadorService()
@@ -62,13 +32,9 @@ servicioChatbot = ChatbotService()
 servicioAuth = AuthService()
 
 
-# =============================================================================
-# PROCESADOR DE CONTEXTO GLOBAL (Sesión de Usuario)
-# =============================================================================
-
+# Pasa la informacion del usuario conectado a todas las pantallas de forma automatica.
 @app.context_processor
 def inyectarDatosGlobales():
-    """Inyecta el usuario actual en todas las plantillas renderizadas."""
     usuarioSesion = session.get("user", None)
     return {
         "current_user": usuarioSesion,
@@ -76,32 +42,28 @@ def inyectarDatosGlobales():
     }
 
 
-# =============================================================================
-# RUTAS DE PÁGINAS (Vistas HTML de la Capa de Presentación)
-# =============================================================================
-
+# Muestra la pagina principal con las motos y accesorios destacados.
 @app.route("/")
 def index():
-    """Página de inicio: visualiza productos destacados."""
     productosDestacados = servicioCatalogo.obtenerProductosDestacados()
     return render_template("index.html", featured_products=productosDestacados)
 
 
+# Muestra el formulario para iniciar sesion en la plataforma.
 @app.route("/login")
 def login_page():
-    """Formulario de inicio de sesión."""
     return render_template("login.html")
 
 
+# Muestra la pantalla para crear una cuenta nueva de usuario.
 @app.route("/register")
 def register_page():
-    """Formulario de registro de usuario."""
     return render_template("register.html")
 
 
+# Carga la pagina del catalogo mostrando unicamente las motocicletas.
 @app.route("/motos")
 def catalog_motos():
-    """Catálogo filtrado para la categoría de motocicletas."""
     productos = servicioCatalogo.obtenerProductosPorCategoria("motos")
     return render_template(
         "catalog.html",
@@ -113,9 +75,9 @@ def catalog_motos():
     )
 
 
+# Carga la pagina del catalogo mostrando unicamente los cascos certificados.
 @app.route("/cascos")
 def catalog_cascos():
-    """Catálogo filtrado para la categoría de cascos de seguridad."""
     productos = servicioCatalogo.obtenerProductosPorCategoria("cascos")
     return render_template(
         "catalog.html",
@@ -127,9 +89,9 @@ def catalog_cascos():
     )
 
 
+# Carga la pagina del catalogo mostrando chaquetas, monos y guantes.
 @app.route("/ropa-y-accesorios")
 def catalog_ropa():
-    """Catálogo filtrado para equipamiento, chaquetas, guantes y monos."""
     productos = servicioCatalogo.obtenerProductosPorCategoria("ropa")
     return render_template(
         "catalog.html",
@@ -141,9 +103,9 @@ def catalog_ropa():
     )
 
 
+# Carga la pagina del catalogo mostrando repuestos y piezas mecanicas.
 @app.route("/repuestos")
 def catalog_repuestos():
-    """Catálogo filtrado para repuestos y componentes de alto rendimiento."""
     productos = servicioCatalogo.obtenerProductosPorCategoria("repuestos")
     return render_template(
         "catalog.html",
@@ -155,18 +117,18 @@ def catalog_repuestos():
     )
 
 
+# Muestra la ficha detallada, fotos y tienda oficial de un producto especifico.
 @app.route("/producto/<product_id>")
 def product_detail(product_id):
-    """Página de detalle técnico individual de un producto."""
     producto = servicioCatalogo.obtenerDetalleProducto(product_id)
     if not producto:
         return redirect(url_for("index"))
     return render_template("detail.html", product=producto)
 
 
+# Muestra la pantalla del comparador para enfrentar hasta 3 productos.
 @app.route("/comparador")
 def comparator_page():
-    """Página interactiva del comparador de especificaciones (hasta 3 productos)."""
     categoria = request.args.get("tipo", "motos")
     if categoria not in ["motos", "cascos", "ropa"]:
         categoria = "motos"
@@ -186,25 +148,21 @@ def comparator_page():
     )
 
 
+# Muestra la lista de productos que el usuario guardo como favoritos.
 @app.route("/favoritos")
 def favorites_page():
-    """Página de productos guardados como favoritos por el usuario."""
     return render_template("favorites.html")
 
 
+# Muestra el formulario para buscar moto segun el presupuesto y tipo de manejo.
 @app.route("/personalizacion")
 def personalization_page():
-    """Página del configurador inteligente de moto y equipamiento según presupuesto."""
     return render_template("recommendations.html")
 
 
-# =============================================================================
-# RUTAS API REST (Consumo asíncrono desde el frontend JS)
-# =============================================================================
-
+# Busca y filtra productos segun los parametros que el usuario escriba en la web.
 @app.route("/api/products", methods=["GET"])
 def api_products():
-    """Endpoint REST: búsqueda y filtrado dinámico de productos."""
     categoria = request.args.get("category")
     marca = request.args.get("brand")
     consulta = request.args.get("q", "").lower().strip()
@@ -220,18 +178,18 @@ def api_products():
     return jsonify({"products": productos, "count": len(productos)})
 
 
+# Devuelve los datos tecnicos de un producto en formato JSON para el navegador.
 @app.route("/api/products/<product_id>", methods=["GET"])
 def api_product_detail(product_id):
-    """Endpoint REST: detalle técnico de un producto en formato JSON."""
     producto = servicioCatalogo.obtenerDetalleProducto(product_id)
     if not producto:
         return jsonify({"error": "Producto no encontrado"}), 404
     return jsonify(producto)
 
 
+# Procesa la comparacion de hasta 3 productos y devuelve las columnas alineadas.
 @app.route("/api/compare", methods=["GET", "POST"])
 def api_compare():
-    """Endpoint REST: compara hasta 3 productos según la regla de negocio."""
     if request.method == "POST":
         datos = request.get_json() or {}
         idsProductos = datos.get("ids", [])
@@ -254,9 +212,9 @@ def api_compare():
         return jsonify({"error": str(error), "code": "MAX_LIMIT_EXCEEDED"}), 400
 
 
+# Devuelve la moto que mejor se adapta al presupuesto y tipo seleccionado.
 @app.route("/api/recommend", methods=["POST"])
 def api_recommend():
-    """Endpoint REST: genera recomendación personalizada por presupuesto y experiencia."""
     datos = request.get_json() or {}
     presupuesto = int(datos.get("budget", 45000000))
     tipoMoto = datos.get("bike_type", "enduro").lower()
@@ -271,9 +229,9 @@ def api_recommend():
     return jsonify(resultado)
 
 
+# Recibe las preguntas del usuario en el chat y responde con las leyes de transito.
 @app.route("/api/chat", methods=["POST"])
 def api_chat():
-    """Endpoint REST: chatbot de orientación normativa de tránsito (Ley 769 / MinTransporte)."""
     datos = request.get_json() or {}
     mensajeUsuario = datos.get("message", "").strip().lower()
 
@@ -284,13 +242,9 @@ def api_chat():
         return jsonify({"error": str(error)}), 400
 
 
-# =============================================================================
-# RUTAS DE AUTENTICACIÓN (Presentación → AuthService)
-# =============================================================================
-
+# Recibe el correo y clave del formulario para iniciar sesion del usuario.
 @app.route("/api/auth/login", methods=["POST"])
 def api_login():
-    """Endpoint REST: inicio de sesión."""
     datos = request.get_json() or {}
     correo = datos.get("email", "").strip()
     contrasena = datos.get("password", "")
@@ -303,9 +257,9 @@ def api_login():
         return jsonify({"error": str(error)}), 400
 
 
+# Recibe los datos del nuevo usuario para registrarlo en el sistema.
 @app.route("/api/auth/register", methods=["POST"])
 def api_register():
-    """Endpoint REST: registro de usuario."""
     datos = request.get_json() or {}
     nombre = datos.get("name", "").strip()
     correo = datos.get("email", "").strip()
@@ -319,24 +273,21 @@ def api_register():
         return jsonify({"error": str(error)}), 400
 
 
+# Cierra la sesion del usuario borrando sus datos de la memoria temporal.
 @app.route("/api/auth/logout", methods=["POST", "GET"])
 def api_logout():
-    """Cierre de sesión."""
     session.pop("user", None)
     return redirect(url_for("index"))
 
 
+# Consulta si hay un usuario con sesion abierta en la pagina.
 @app.route("/api/auth/me", methods=["GET"])
 def api_me():
-    """Verifica estado de la sesión activa."""
     usuarioSesion = session.get("user", None)
     resultado = servicioAuth.obtenerDatosSesion(usuarioSesion)
     return jsonify(resultado)
 
 
-# =============================================================================
-# PUNTO DE ARRANQUE LOCAL
-# =============================================================================
-
+# Inicia el servidor web si se ejecuta este archivo directamente.
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000, debug=True)

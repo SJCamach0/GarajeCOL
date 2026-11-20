@@ -1,66 +1,37 @@
-"""
-=============================================================================
-CAPA DE LÓGICA — Servicio: RecomendacionService
-=============================================================================
-Implementa la lógica del motor de recomendación personalizada de GarajeCOL.
-Selecciona la mejor motocicleta dentro del presupuesto y determina el nivel
-técnico de protección requerido según cilindrada y experiencia del piloto.
-=============================================================================
-"""
+# Servicio que busca la moto ideal segun el dinero disponible y el tipo de moto.
+# Revisa el catalogo y entrega la moto mas completa que no sobrepase el presupuesto.
 
 from typing import Dict, Any, Optional
 from logica.personalizacion import Personalizacion
 
 
 class RecomendacionService:
-    """
-    Servicio de la lógica de negocio para recomendaciones personalizadas.
-
-    Atributos privados:
-        _objRepo: Repositorio para consultar productos.
-        _objPersonalizacion (Personalizacion): Modelo de personalización de preferencias.
-    """
+    # Servicio que genera la recomendacion de moto personalizada.
 
     def __init__(self, objRepo: Optional[Any] = None) -> None:
-        """
-        Constructor del servicio de recomendación.
-        """
+        # Conecta el servicio con el repositorio de productos y crea la personalizacion.
         if objRepo is None:
             from datos.producto_repository import ProductoRepository
             objRepo = ProductoRepository()
         self._objRepo = objRepo
         self._objPersonalizacion: Personalizacion = Personalizacion()
 
+    # Filtra las motos por tipo y presupuesto, seleccionando la mejor opcion disponible.
     def generarRecomendacion(
         self,
         intPresupuesto: int = 45000000,
         strTipoMoto: str = "enduro",
         strExperiencia: str = "intermedio",
     ) -> Dict[str, Any]:
-        """
-        Calcula y selecciona el paquete completo de moto + indumentaria de seguridad
-        más apropiado para el presupuesto y nivel del usuario.
-
-        Parámetros:
-            intPresupuesto (int): Presupuesto total disponible en pesos colombianos.
-            strTipoMoto (str): Estilo de motocicleta ('enduro', 'urbana', 'deportiva', etc.).
-            strExperiencia (str): Nivel de manejo ('principiante', 'intermedio', 'avanzado').
-
-        Retorna:
-            Dict[str, Any]: Paquete con moto, casco, traje, repuesto, guantes y alerta.
-        """
-        # Guardar en el modelo de personalización
         self._objPersonalizacion.personalizarSegunIntereses(intPresupuesto, strTipoMoto, strExperiencia)
 
         productos = self._objRepo.obtenerTodosComoDict()
         motos = [p for p in productos if p.get("category") == "motos"]
 
-        # 1. Filtrar por tipo
         motosDelTipo = [m for m in motos if m.get("type") == strTipoMoto.lower().strip()]
         if not motosDelTipo:
             motosDelTipo = motos
 
-        # 2. Filtrar por presupuesto
         dentroPresupuesto = [m for m in motosDelTipo if m.get("price", 0) <= intPresupuesto]
         if dentroPresupuesto:
             motoElegida = sorted(dentroPresupuesto, key=lambda x: x["price"], reverse=True)[0]
@@ -69,7 +40,6 @@ class RecomendacionService:
 
         cilindrada = motoElegida.get("displacement", 300)
 
-        # 3. Selección de indumentaria por niveles de protección
         cascos = [p for p in productos if p.get("category") == "cascos"]
         ropa = [p for p in productos if p.get("category") == "ropa"]
         repuestos = [p for p in productos if p.get("category") == "repuestos"]
@@ -105,13 +75,13 @@ class RecomendacionService:
             "total_budget": intPresupuesto,
         }
 
-    # Alias snake_case
     generar_recomendacion = generarRecomendacion
 
+    # Busca un accesorio que coincida con la gama de precio solicitada.
     def _seleccionarPorTier(self, lista: list, strTier: str, indiceFallback: int = 0) -> dict:
-        """Selecciona un producto que coincida con el tier de precio indicado."""
         return next((item for item in lista if item.get("price_tier") == strTier), lista[indiceFallback] if len(lista) > indiceFallback else {})
 
+    # Mensaje de seguridad para motos de alta cilindrada y velocidad.
     def _alertaProteccionMaxima(self, intCilindrada: int) -> Dict[str, str]:
         return {
             "title": "Exigencia de Máxima Protección (Cilindrada Alta / >600 cc)",
@@ -123,6 +93,7 @@ class RecomendacionService:
             "level": "max",
         }
 
+    # Mensaje de seguridad para motos de media cilindrada.
     def _alertaProteccionMedia(self, intCilindrada: int) -> Dict[str, str]:
         return {
             "title": "Protección Equilibrada Carretera / Ciudad (250 cc – 500 cc)",
@@ -134,6 +105,7 @@ class RecomendacionService:
             "level": "med",
         }
 
+    # Mensaje de seguridad para motos de baja cilindrada de uso urbano.
     def _alertaProteccionUrbana(self, intCilindrada: int) -> Dict[str, str]:
         return {
             "title": "Protección Urbana Diaria Homologada (100 cc – 200 cc)",

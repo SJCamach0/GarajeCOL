@@ -1,18 +1,5 @@
-"""
-=============================================================================
-CAPA DE LÓGICA — GarajeCOL
-=============================================================================
-Módulo principal de la capa de lógica de negocio y dominio del sistema.
-Contiene todos los modelos basados en los 4 pilares de la POO:
-  - Abstracción: Producto (clase abstracta base).
-  - Herencia: Motocicleta, Equipamiento, Repuesto (heredan de Producto).
-  - Polimorfismo: obtenerDetalles() y revisarEspecificaciones() especializados.
-  - Encapsulamiento: atributos privados con validación y getters en camelCase.
-
-Incluye los servicios de orquestación:
-  - CatalogoService, RecomendacionService, ComparadorService, ChatbotService, AuthService.
-=============================================================================
-"""
+# Capa de logica: agrupa las clases de los productos, usuarios y servicios.
+# Contiene las reglas del negocio como filtros, comparaciones y recomendaciones.
 
 from logica.producto import Producto
 from logica.motocicleta import Motocicleta
@@ -31,8 +18,8 @@ from logica.comparador_service import ComparadorService
 from logica.chatbot_service import ChatbotService
 from logica.auth_service import AuthService
 
+# Lista de clases y servicios disponibles para importar en la aplicacion.
 __all__ = [
-    # Modelos de Dominio POO
     "Producto",
     "Motocicleta",
     "Equipamiento",
@@ -43,7 +30,6 @@ __all__ = [
     "Personalizacion",
     "Chatbot",
     "PlataformaWeb",
-    # Servicios de Lógica de Negocio
     "CatalogoService",
     "RecomendacionService",
     "ComparadorService",

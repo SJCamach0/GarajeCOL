@@ -1,27 +1,12 @@
-"""
-=============================================================================
-CAPA DE LÓGICA — Subclase: Repuesto
-=============================================================================
-Pilar POO: HERENCIA y POLIMORFISMO.
-
-Hereda de Producto y añade la verificación de compatibilidad mecánica
-con motocicletas específicas (discos, pastillas, bujías, lubricantes, kits).
-Sobrescribe obtenerDetalles() y revisarEspecificaciones() respondiendo de
-forma polimórfica con los datos mecánicos.
-=============================================================================
-"""
+# Representa repuestos y piezas de mantenimiento (frenos, cadenas, bujias, filtros).
+# Hereda de Producto y permite revisar si una pieza le sirve a un modelo de moto.
 
 from typing import Any
 from logica.producto import Producto
 
 
 class Repuesto(Producto):
-    """
-    Subclase Repuesto que especializa a Producto.
-
-    HERENCIA: Reutiliza nombre, marca, precio, tienda oficial e imagen
-    provenientes de la clase padre Producto mediante super().__init__().
-    """
+    # Clase para repuestos y componentes mecanicos de motocicletas.
 
     def __init__(
         self,
@@ -32,9 +17,7 @@ class Repuesto(Producto):
         strEnlaceTiendaOficial: str,
         **kwargs: Any,
     ) -> None:
-        """
-        Constructor de la clase Repuesto.
-        """
+        # Envia los datos generales a la clase Producto indicando que es categoria repuestos.
         kwargs.pop("strCategoriaProducto", None)
         kwargs.pop("strNombreCategoria", None)
         super().__init__(
@@ -48,58 +31,34 @@ class Repuesto(Producto):
             **kwargs,
         )
 
-    # =========================================================================
-    # POLIMORFISMO: IMPLEMENTACIÓN DE MÉTODOS ABSTRACTOS
-    # =========================================================================
-
+    # Devuelve un resumen con las especificaciones del repuesto o componente.
     def revisarEspecificaciones(self) -> str:
-        """
-        POLIMORFISMO: Resumen de compatibilidad y especificaciones mecánicas.
-
-        Retorna:
-            str: Ficha mecánica del repuesto.
-        """
         specs = self.dictEspecificaciones
-        lineas = [f"🔧 Especificaciones Mecánicas — {self.strNombreProducto}"]
+        lineas = [f"Especificaciones Mecanicas — {self.strNombreProducto}"]
         for clave, valor in specs.items():
             lineas.append(f"  • {clave}: {valor}")
         return "\n".join(lineas)
 
+    # Devuelve el texto con los datos tecnicos del repuesto y su tienda oficial.
     def obtenerDetalles(self) -> str:
-        """
-        POLIMORFISMO: Retorna la ficha técnica de compatibilidad y rendimiento.
-
-        Retorna:
-            str: Especificaciones de compatibilidad mecánica.
-        """
         detalles = [
-            f"🔧 {self.strMarcaProducto} {self.strNombreProducto}",
+            f"{self.strMarcaProducto} {self.strNombreProducto}",
             f"   Precio: {self.strPrecioFormateado}",
             f"   {self.strDescripcion}",
         ]
         for clave, valor in self.dictEspecificaciones.items():
             detalles.append(f"   {clave}: {valor}")
-        detalles.append(f"   🔗 Tienda: {self.strNombreTiendaOficial} — {self.strEnlaceTiendaOficial}")
+        detalles.append(f"   Tienda: {self.strNombreTiendaOficial} — {self.strEnlaceTiendaOficial}")
         return "\n".join(detalles)
 
+    # Comprueba si el repuesto menciona la marca o el modelo de la moto en su ficha.
     def verificarCompatibilidad(self, objMotocicleta: Any) -> bool:
-        """
-        Método exclusivo de Repuesto: verifica si el repuesto es compatible
-        con una motocicleta dada analizando marca y modelo en sus especificaciones.
-
-        Parámetros:
-            objMotocicleta (Motocicleta): Objeto de motocicleta a comprobar.
-
-        Retorna:
-            bool: True si existe compatibilidad declarada, False en caso contrario.
-        """
         textoSpecs = " ".join(self.dictEspecificaciones.values()).lower()
         marcaMoto = getattr(objMotocicleta, "strMarcaProducto", getattr(objMotocicleta, "marca", "")).lower()
         nombreMoto = getattr(objMotocicleta, "strNombreProducto", getattr(objMotocicleta, "nombre", "")).lower()
 
         return marcaMoto in textoSpecs or nombreMoto in textoSpecs
 
-    # Aliases snake_case para compatibilidad
     revisar_especificaciones = revisarEspecificaciones
     obtener_detalles = obtenerDetalles
     verificar_compatibilidad = verificarCompatibilidad
