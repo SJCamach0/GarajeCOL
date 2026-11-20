@@ -25,7 +25,7 @@
   "topics": [
     {
       "id": "casco",
-      "keywords": ["casco", "abrochar", "visor", "celular", "c24", "multa casco", "ece", "dot", "certificacion casco"],
+      "keywords": ["casco", "abrochar", "visor", "celular en el casco", "telefono en el casco", "c24", "multa casco", "ece", "dot", "certificacion casco"],
       "title": "Reglamentación del Uso del Casco Protector",
       "norm": "Resolución 20203040023385 de 2020 (Ministerio de Transporte) & Art. 96 Ley 769 de 2002",
       "summary": "En Colombia es obligatorio que conductor y acompañante usen casco protector certificado.",
@@ -83,7 +83,7 @@
     },
     {
       "id": "documentos",
-      "keywords": ["documentos", "soat", "tecnomecanica", "licencia", "pase", "tarjeta propiedad", "rtm", "a1", "a2"],
+      "keywords": ["documentos", "soat", "soat digital", "soat en el celular", "mostrar soat", "tecnomecanica", "licencia", "pase", "tarjeta propiedad", "rtm", "a1", "a2"],
       "title": "Documentación Obligatoria para Motociclistas",
       "norm": "Artículos 34, 50, 51, 52 de la Ley 769 de 2002 y Ley 2161 de 2021",
       "summary": "Documentos indispensables que todo conductor de motocicleta debe portar en Colombia.",
@@ -128,24 +128,28 @@
   ],
   "faq": [
     {
-      "q": "¿Qué pasa si llevo el casco desabrochado en moto?",
-      "a": "Llevar el casco desabrochado equivale legalmente a no portarlo. Según la Resolución 20203040023385 de 2020 de MinTransporte, se incurre en la infracción C.24 del Código Nacional de Tránsito, con una sanción de 30 SMLDV y la inmovilización preventiva de la motocicleta."
+      "q": "¿Cuáles son las multas por llevar el casco desabrochado?",
+      "a": "Llevar el casco desabrochado equivale legalmente a no portarlo. Según la Resolución 20203040023385 de 2020 de MinTransporte, se incurre en la infracción C.24 del Código Nacional de Tránsito, con una sanción de 30 SMLDV y la inmovilización preventiva de la motocicleta.",
+      "norm": "Resolución 20203040023385 de 2020 & Art. 96 Ley 769 de 2002",
+      "source_url": "https://www.mintransporte.gov.co"
     },
     {
       "q": "¿A qué hora es obligatorio el chaleco reflectivo?",
-      "a": "El chaleco o chaqueta reflectiva es obligatorio entre las 18:00 (6:00 p.m.) y las 06:00 (6:00 a.m.) del día siguiente, o en cualquier momento con visibilidad reducida (lluvia, neblina). Art. 94 Ley 769 de 2002."
+      "a": "El chaleco o chaqueta reflectiva es obligatorio entre las 18:00 (6:00 p.m.) y las 06:00 (6:00 a.m.) del día siguiente, o en cualquier momento con visibilidad reducida (lluvia, neblina). Art. 94 Ley 769 de 2002.",
+      "norm": "Artículo 94 de la Ley 769 de 2002",
+      "source_url": "https://www.mintransporte.gov.co"
     },
     {
       "q": "¿Cuál es la velocidad máxima para motos en ciudad?",
-      "a": "La Ley 2251 de 2022 ('Ley Julián Esteban') fijó el límite máximo en 50 km/h para vías urbanas, y 30 km/h en zonas residenciales y escolares."
+      "a": "La Ley 2251 de 2022 ('Ley Julián Esteban') fijó el límite máximo en 50 km/h para vías urbanas, y 30 km/h en zonas residenciales y escolares.",
+      "norm": "Ley 2251 de 2022 (Ley Julián Esteban)",
+      "source_url": "https://ansv.gov.co"
     },
     {
       "q": "¿Las motos pagan peaje en Colombia?",
-      "a": "No. De acuerdo con el Artículo 21 de la Ley 787 de 2002, las motocicletas están exentas del cobro de peaje en las vías nacionales colombianas."
-    },
-    {
-      "q": "¿Puedo mostrar el SOAT en el celular?",
-      "a": "Sí. Mediante la Ley 2161 de 2021 y la Circular 20221010000601 del MinTransporte, es totalmente válido portar el SOAT y la licencia en formato digital descargado con su código QR o verificado en el RUNT."
+      "a": "No. De acuerdo con el Artículo 21 de la Ley 787 de 2002, las motocicletas están exentas del cobro de peaje en las vías nacionales colombianas.",
+      "norm": "Artículo 21 de la Ley 787 de 2002",
+      "source_url": "https://www.mintransporte.gov.co"
     }
   ]
 }

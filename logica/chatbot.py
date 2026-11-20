@@ -42,9 +42,39 @@ class Chatbot:
     def orientarSobreCodigoTransito(self, strConsulta: str) -> Dict[str, Any]:
         consultaLimpia = strConsulta.lower().strip()
         temas = self._objBaseConocimientoLegal.get("topics", [])
+        faqs = self._objBaseConocimientoLegal.get("faq", [])
         disclaimer = self._objBaseConocimientoLegal.get("disclaimer", "")
         fuentesOficiales = self._objBaseConocimientoLegal.get("official_sources", [])
 
+        # Revisa primero si la pregunta coincide directamente con una duda frecuente (FAQ).
+        for item in faqs:
+            pregunta = item.get("q", "").lower()
+            palabrasClave = [p for p in pregunta.replace("¿", "").replace("?", "").split() if len(p) > 3]
+            coincidencias = sum(1 for p in palabrasClave if p in consultaLimpia)
+            if len(palabrasClave) > 0 and (coincidencias / len(palabrasClave)) >= 0.5:
+                respuesta = (
+                    f"**{item['q']}**\n\n"
+                    f"{item['a']}\n\n"
+                    f"📋 **Fundamento Legal Oficial:** {item.get('norm', 'Ministerio de Transporte')}\n\n"
+                    f"🔗 **Fuente Oficial:** [{item.get('norm', 'Consultar norma')}]({item.get('source_url', 'https://www.mintransporte.gov.co')})"
+                )
+                fuente = {
+                    "name": "Ministerio de Transporte de Colombia",
+                    "norm": item.get("norm", "Normativa Nacional de Tránsito"),
+                    "url": item.get("source_url", "https://www.mintransporte.gov.co"),
+                }
+                self._lstHistorialConsultas.append({
+                    "consulta": strConsulta,
+                    "temaEncontrado": item["q"],
+                })
+                return {
+                    "reply": respuesta,
+                    "official_source": fuente,
+                    "disclaimer": disclaimer,
+                    "all_sources": fuentesOficiales,
+                }
+
+        # Si no es pregunta rapida, busca el tema por puntaje de palabras clave.
         mejorTema = None
         mejorPuntaje = 0
 
@@ -52,7 +82,7 @@ class Chatbot:
             puntaje = 0
             for palabraClave in tema.get("keywords", []):
                 if palabraClave in consultaLimpia:
-                    puntaje += 2
+                    puntaje += 4 if " " in palabraClave else 2
             for palabra in tema.get("title", "").lower().split():
                 if len(palabra) > 3 and palabra in consultaLimpia:
                     puntaje += 1
