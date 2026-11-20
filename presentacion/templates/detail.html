@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} | GarajeCOL{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+  <!-- Breadcrumbs -->
+  <nav class="text-xs text-neutral-400 mb-6 flex items-center gap-1.5 font-normal">
+    <a href="/" class="hover:text-neutral-700">Inicio</a>
+    <span>/</span>
+    <a href="/{{ product.category }}" class="hover:text-neutral-700 capitalize">{{ product.category_name }}</a>
+    <span>/</span>
+    <span class="text-neutral-800 font-semibold">{{ product.name }}</span>
+  </nav>
+
+  <!-- Top Hero Product View (Mockup Layout) -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-10">
+    
+    <!-- Gallery Column (Thumbnails + Main Image) -->
+    <div class="lg:col-span-7 flex flex-col-reverse sm:flex-row gap-4 items-start">
+      
+      <!-- Thumbnails (Clean studio look) -->
+      <div class="flex sm:flex-col gap-3 overflow-x-auto sm:overflow-visible pb-2 sm:pb-0">
+        <button class="thumb-btn w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border-2 border-lime-500 bg-[#f8f9fa] p-1 flex-shrink-0 flex items-center justify-center transition-all" onclick="changeMainImage('{{ product.image_large }}', this)">
+          <img src="{{ product.image_large }}" alt="{{ product.name }}" class="w-full h-full object-contain">
+        </button>
+        {% for thumb in product.thumbnails %}
+        <button class="thumb-btn w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border border-neutral-200 hover:border-lime-500 bg-[#f8f9fa] p-1 flex-shrink-0 flex items-center justify-center transition-all" onclick="changeMainImage('{{ thumb }}', this)">
+          <img src="{{ thumb }}" alt="{{ product.name }}" class="w-full h-full object-contain">
+        </button>
+        {% endfor %}
+      </div>
+
+      <!-- Main Preview Container (Clean Apple-style studio stage) -->
+      <div class="flex-grow bg-[#f8f9fa] border border-neutral-200/80 rounded-2xl overflow-hidden shadow-sm flex items-center justify-center p-6 min-h-[380px] sm:min-h-[460px] w-full">
+        <img id="mainProductImg" src="{{ product.image_large }}" alt="{{ product.name }}" class="max-h-[440px] w-auto max-w-full object-contain filter drop-shadow-md transition-all duration-300">
+      </div>
+
+    </div>
+
+    <!-- Product Info Column -->
+    <div class="lg:col-span-5 flex flex-col justify-start">
+      
+      <!-- Brand -->
+      <span class="text-xs font-black text-lime-600 tracking-wider uppercase mb-1">
+        {{ product.brand }}
+      </span>
+
+      <!-- Title in heavy italic sans -->
+      <h1 class="text-3xl sm:text-4xl font-black text-neutral-900 sport-heading italic tracking-tight mb-3 leading-tight">
+        {{ product.name }}
+      </h1>
+
+      <!-- Price -->
+      <div class="text-2xl sm:text-3xl font-black text-neutral-900 tracking-tight mb-6">
+        {{ product.price_formatted }}
+      </div>
+
+      <!-- Size Selector (if applicable) -->
+      {% if product.sizes %}
+      <div class="mb-6">
+        <span class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-2.5">
+          SELECCIONA TALLA
+        </span>
+        <div class="flex items-center gap-2">
+          {% for sz in product.sizes %}
+          <button class="size-btn w-10 h-10 rounded border border-neutral-300 font-bold text-xs uppercase flex items-center justify-center text-neutral-800 hover:border-neutral-900 transition-colors {% if loop.index == 2 %}bg-black text-white border-black{% endif %}" onclick="selectSize(this)">
+            {{ sz }}
+          </button>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Actions -->
+      <div class="space-y-3 mb-6">
+        <!-- Add to comparator button -->
+        <button class="comp-toggle-btn w-full btn-garaje-lime py-3.5 px-6 rounded-lg text-xs font-black tracking-wider uppercase shadow" 
+                data-id="{{ product.id }}" data-category="{{ product.category }}" data-name="{{ product.name }}">
+          <i class="fa-solid fa-code-compare"></i> AÑADIR AL COMPARADOR <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        </button>
+
+        <!-- Official Store Button -->
+        <a href="{{ product.official_url }}" target="_blank" rel="noopener noreferrer" 
+           class="w-full btn-garaje-outline py-3 px-6 rounded-lg text-xs font-bold tracking-wider uppercase border-neutral-300 hover:border-neutral-900 flex items-center justify-center gap-2">
+          <span>TIENDA OFICIAL / DISTRIBUIDOR</span>
+          <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+        </a>
+      </div>
+
+      <!-- Verified Official Store Note -->
+      <div class="bg-neutral-50 border border-neutral-200 rounded-lg p-3 text-[11px] text-neutral-600 flex items-center gap-2.5 mb-6">
+        <i class="fa-solid fa-circle-check text-green-600 text-base flex-shrink-0"></i>
+        <span>Enlace verificado a <strong>{{ product.official_store_name }}</strong>. Todos los precios y especificaciones provienen del distribuidor oficial en Colombia.</span>
+      </div>
+
+      <!-- Add to Favorites button -->
+      <div>
+        <button class="fav-toggle-btn text-xs font-bold text-neutral-700 hover:text-neutral-900 flex items-center gap-2" data-id="{{ product.id }}">
+          <i class="fa-regular fa-heart text-base"></i>
+          <span>Guardar en mis favoritos</span>
+        </button>
+      </div>
+
+      <!-- Short Description -->
+      <div class="mt-6 pt-6 border-t border-neutral-200">
+        <p class="text-xs text-neutral-600 leading-relaxed">
+          {{ product.description }}
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Lower Section: ESPECIFICACIONES TÉCNICAS (Matches Mockup Table) -->
+  <div class="bg-white border border-neutral-200 rounded-2xl p-6 sm:p-8 shadow-sm">
+    <h2 class="text-xl sm:text-2xl font-black text-neutral-900 sport-heading italic tracking-tight mb-6">
+      ESPECIFICACIONES TÉCNICAS
+    </h2>
+
+    <div class="divide-y divide-neutral-100 text-xs sm:text-sm">
+      {% for key, val in product.specs.items() %}
+      <div class="py-3.5 sm:py-4 grid grid-cols-1 sm:grid-cols-12 gap-2">
+        <div class="sm:col-span-4 font-normal text-neutral-400 capitalize">
+          {{ key }}
+        </div>
+        <div class="sm:col-span-8 font-bold text-neutral-900 whitespace-pre-line">
+          {{ val }}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  function changeMainImage(url, btn) {
+    document.getElementById('mainProductImg').src = url;
+    document.querySelectorAll('.thumb-btn').forEach(b => {
+      b.className = 'thumb-btn w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border border-neutral-200 hover:border-lime-500 bg-[#f8f9fa] p-1 flex-shrink-0 flex items-center justify-center transition-all';
+    });
+    btn.className = 'thumb-btn w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border-2 border-lime-500 bg-[#f8f9fa] p-1 flex-shrink-0 flex items-center justify-center';
+  }
+
+  function selectSize(btn) {
+    document.querySelectorAll('.size-btn').forEach(b => {
+      b.className = 'size-btn w-10 h-10 rounded border border-neutral-300 font-bold text-xs uppercase flex items-center justify-center text-neutral-800 hover:border-neutral-900 transition-colors';
+    });
+    btn.className = 'size-btn w-10 h-10 rounded border border-black bg-black text-white font-bold text-xs uppercase flex items-center justify-center';
+  }
+</script>
+{% endblock %}

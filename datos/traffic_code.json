@@ -1,0 +1,151 @@
+{
+  "disclaimer": "AVISO LEGAL Y EDUCATIVO: Este asistente inteligente tiene propósitos exclusivamente informativos y pedagógicos sobre la normativa vial colombiana. No constituye asesoría jurídica formal, concepto legal vinculante ni reemplaza la consulta directa con las autoridades de tránsito o el Ministerio de Transporte de Colombia.",
+  "official_sources": [
+    {
+      "name": "Ministerio de Transporte de Colombia",
+      "url": "https://www.mintransporte.gov.co",
+      "description": "Entidad rectora del sector transporte y tránsito en Colombia"
+    },
+    {
+      "name": "Registro Único Nacional de Tránsito (RUNT)",
+      "url": "https://www.runt.gov.co",
+      "description": "Consulta de historial vehicular, licencias, SOAT y RTM"
+    },
+    {
+      "name": "Agencia Nacional de Seguridad Vial (ANSV)",
+      "url": "https://ansv.gov.co",
+      "description": "Políticas y pedagogía sobre seguridad vial para motociclistas"
+    },
+    {
+      "name": "Superintendencia de Transporte",
+      "url": "https://www.supertransporte.gov.co",
+      "description": "Vigilancia e inspección del transporte en Colombia"
+    }
+  ],
+  "topics": [
+    {
+      "id": "casco",
+      "keywords": ["casco", "abrochar", "visor", "celular", "c24", "multa casco", "ece", "dot", "certificacion casco"],
+      "title": "Reglamentación del Uso del Casco Protector",
+      "norm": "Resolución 20203040023385 de 2020 (Ministerio de Transporte) & Art. 96 Ley 769 de 2002",
+      "summary": "En Colombia es obligatorio que conductor y acompañante usen casco protector certificado.",
+      "key_rules": [
+        "1. La cabeza del motociclista debe estar totalmente inmersa en el casco y el sistema de retención (correa/broche) debe estar completamente ajustado por debajo del mentón, sin correas rotas ni broches defectuosos.",
+        "2. No se permite el uso de teléfonos celulares o dispositivos de comunicación entre la cabeza y el casco. Solo se permiten dispositivos manos libres o intercomunicadores empotrados que no obstaculicen la visión ni el ajuste.",
+        "3. En cascos abatibles o modulares, la parte frontal abatible debe mantenerse asegurada en la posición cerrada durante la marcha.",
+        "4. El casco debe contar con certificación vigente estampada o grabada: DOT (FMVSS 218), ECE 22.05 / ECE 22.06 o NTC 4533."
+      ],
+      "sanction": "Infracción C.24 del Código Nacional de Tránsito: Multa de 30 salarios mínimos legales diarios vigentes (SMLDV) e inmovilización de la motocicleta.",
+      "source_url": "https://www.mintransporte.gov.co/documentos/6/resoluciones/"
+    },
+    {
+      "id": "reflectivo",
+      "keywords": ["chaleco", "reflectivo", "chaqueta", "hora chaleco", "prenda reflectiva", "noche"],
+      "title": "Uso de Prendas Reflectivas (Chaleco / Chaqueta)",
+      "norm": "Artículo 94 de la Ley 769 de 2002 (Código Nacional de Tránsito)",
+      "summary": "Tanto el conductor como el acompañante deben vestir chaleco o chaqueta reflectiva en horas de poca luz.",
+      "key_rules": [
+        "Horario obligatorio: Entre las 18:00 horas (6:00 p.m.) y las 06:00 horas (6:00 a.m.) del día siguiente.",
+        "También es obligatorio en cualquier momento del día cuando las condiciones de visibilidad sean escasas (lluvia densa, neblina o túneles).",
+        "La prenda debe tener bandas de material reflectivo de mínimo 5 cm de ancho ubicadas en el torso y la espalda para garantizar visibilidad a distancia.",
+        "Aclaración: Ya NO es obligatorio llevar el número de placa estampado en el chaleco (la Ley Antitrámites eliminó esa exigencia específica para chalecos, aunque se mantiene para el casco en ciertas regulaciones locales)."
+      ],
+      "sanction": "Infracción C.24: Multa de 30 SMLDV.",
+      "source_url": "https://www.mintransporte.gov.co"
+    },
+    {
+      "id": "luces",
+      "keywords": ["luces", "luz", "dia", "encendida", "luz delantera", "stop"],
+      "title": "Uso Obligatorio de Luces las 24 Horas",
+      "norm": "Artículo 96 Numeral 2 de la Ley 769 de 2002",
+      "summary": "Las motocicletas deben transitar con la luz frontal y trasera encendidas permanentemente.",
+      "key_rules": [
+        "Deben transitar en todo momento (las 24 horas del día, tanto de día como de noche) con la luz delantera encendida (color blanco o amarillo).",
+        "La luz trasera roja de posición y la luz de freno deben funcionar correctamente.",
+        "Queda prohibido el uso de luces estroboscópicas, exploradoras desalineadas o de colores no autorizados que encandilen a los demás usuarios de la vía."
+      ],
+      "sanction": "Infracción D.08 o C.24 según la tipificación del comparendo.",
+      "source_url": "https://www.mintransporte.gov.co"
+    },
+    {
+      "id": "velocidad",
+      "keywords": ["velocidad", "limite", "julian esteban", "km/h", "zona urbana", "carretera", "fotomulta"],
+      "title": "Límites de Velocidad para Motociclistas",
+      "norm": "Ley 2251 de 2022 ('Ley Julián Esteban') que modificó el Artículo 106 de la Ley 769 de 2002",
+      "summary": "La Ley Julián Esteban redujo los límites de velocidad para salvar vidas en la vía.",
+      "key_rules": [
+        "Zonas Urbanas: Máximo 50 km/h en vías principales de ciudades.",
+        "Zonas Especiales Urbanas: Máximo 30 km/h en zonas residenciales, escolares, hospitales y zonas de alto flujo peatonal.",
+        "Carreteras Nacionales y Departamentales: Máximo 90 km/h (solo puede subir a 120 km/h si la vía es doble calzada y la señalización técnica del INVÍAS expresamente lo autoriza)."
+      ],
+      "sanction": "Infracción C.29: Conducir a velocidad superior a la máxima permitida. Multa de 30 SMLDV.",
+      "source_url": "https://ansv.gov.co"
+    },
+    {
+      "id": "documentos",
+      "keywords": ["documentos", "soat", "tecnomecanica", "licencia", "pase", "tarjeta propiedad", "rtm", "a1", "a2"],
+      "title": "Documentación Obligatoria para Motociclistas",
+      "norm": "Artículos 34, 50, 51, 52 de la Ley 769 de 2002 y Ley 2161 de 2021",
+      "summary": "Documentos indispensables que todo conductor de motocicleta debe portar en Colombia.",
+      "key_rules": [
+        "1. Licencia de Conducción Vigente: Categoría A1 (motos de hasta 125 cc) o Categoría A2 (motos de más de 125 cc).",
+        "2. Licencia de Tránsito (Tarjeta de Propiedad del vehículo).",
+        "3. SOAT (Seguro Obligatorio de Accidentes de Tránsito): Vigencia anual. Es 100% legal presentarlo en formato digital en el celular.",
+        "4. Revisión Técnico-Mecánica y de Emisiones Contaminantes (RTM): Para motocicletas nuevas particulares, la primera revisión se realiza a los dos (2) años de la fecha de matrícula. Posteriormente, se renueva anualmente.",
+        "Consulta digital: Cualquier agente de tránsito puede y debe validar tus documentos en el sistema RUNT en línea si no los llevas en físico (Circular 20221010000601 del MinTransporte)."
+      ],
+      "sanction": "Conducir sin SOAT (Infracción D.02: 30 SMLDV + Inmovilización). Conducir sin RTM (Infracción C.35: 15 SMLDV + Inmovilización).",
+      "source_url": "https://www.runt.gov.co"
+    },
+    {
+      "id": "maniobras",
+      "keywords": ["carril", "adelantar", "anden", "berma", "acera", "zig zag", "maniobra", "parrillero"],
+      "title": "Reglas de Circulación, Carriles y Adelantamientos",
+      "norm": "Artículos 68, 94 y 96 de la Ley 769 de 2002",
+      "summary": "Obligaciones del motociclista en la calzada para una conducción segura.",
+      "key_rules": [
+        "Ocupar un carril completo: Las motocicletas deben circular por el centro de un carril como cualquier otro vehículo. Queda prohibido transitar entre dos filas de vehículos en movimiento (zig-zag).",
+        "Prohibición absoluta: No se puede transitar sobre andenes, aceras, puentes peatonales, ciclorrutas ni bermas.",
+        "Adelantamientos: Siempre se debe adelantar por el carril izquierdo, utilizando las luces direccionales con anticipación.",
+        "Parrillero o Acompañante: Debe ir sentado a horcajadas detrás del conductor con los pies en los estribos y portando casco reglamentario. No se permite transportar menores de 10 años en ciudades con restricción local."
+      ],
+      "sanction": "Infracciones A.01, D.03 (transitar en sentido contrario) o C.14.",
+      "source_url": "https://www.mintransporte.gov.co"
+    },
+    {
+      "id": "peajes",
+      "keywords": ["peaje", "pago peaje", "exento peaje", "cobro peaje"],
+      "title": "Exención de Pago de Peajes para Motocicletas",
+      "norm": "Artículo 21 de la Ley 787 de 2002",
+      "summary": "En Colombia las motocicletas no pagan peaje en carreteras nacionales.",
+      "key_rules": [
+        "Por expresa disposición legal de la Ley 787 de 2002, las motocicletas de cualquier cilindrada están exentas del pago de peajes en toda la red vial nacional a cargo de la ANI o el INVÍAS.",
+        "Los motociclistas deben cruzar por el carril exclusivo o demarcado para motos a velocidad reducida y con precaución."
+      ],
+      "sanction": "No aplica cobro.",
+      "source_url": "https://www.mintransporte.gov.co"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué pasa si llevo el casco desabrochado en moto?",
+      "a": "Llevar el casco desabrochado equivale legalmente a no portarlo. Según la Resolución 20203040023385 de 2020 de MinTransporte, se incurre en la infracción C.24 del Código Nacional de Tránsito, con una sanción de 30 SMLDV y la inmovilización preventiva de la motocicleta."
+    },
+    {
+      "q": "¿A qué hora es obligatorio el chaleco reflectivo?",
+      "a": "El chaleco o chaqueta reflectiva es obligatorio entre las 18:00 (6:00 p.m.) y las 06:00 (6:00 a.m.) del día siguiente, o en cualquier momento con visibilidad reducida (lluvia, neblina). Art. 94 Ley 769 de 2002."
+    },
+    {
+      "q": "¿Cuál es la velocidad máxima para motos en ciudad?",
+      "a": "La Ley 2251 de 2022 ('Ley Julián Esteban') fijó el límite máximo en 50 km/h para vías urbanas, y 30 km/h en zonas residenciales y escolares."
+    },
+    {
+      "q": "¿Las motos pagan peaje en Colombia?",
+      "a": "No. De acuerdo con el Artículo 21 de la Ley 787 de 2002, las motocicletas están exentas del cobro de peaje en las vías nacionales colombianas."
+    },
+    {
+      "q": "¿Puedo mostrar el SOAT en el celular?",
+      "a": "Sí. Mediante la Ley 2161 de 2021 y la Circular 20221010000601 del MinTransporte, es totalmente válido portar el SOAT y la licencia en formato digital descargado con su código QR o verificado en el RUNT."
+    }
+  ]
+}

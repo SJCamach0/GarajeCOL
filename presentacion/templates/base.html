@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}GarajeCOL | Plataforma Centralizada para Motociclistas{% endblock %}</title>
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            limeBrand: '#82F500',
+            limeBrandHover: '#72DB00',
+            darkBrand: '#0D0E11',
+            darkHeader: '#111216',
+            cardBg: '#FFFFFF',
+            mutedBg: '#F8F9FA'
+          }
+        }
+      }
+    }
+  </script>
+  
+  <link rel="stylesheet" href="/static/css/custom.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="bg-[#f8f9fa] text-neutral-900 min-h-screen flex flex-col antialiased">
+
+  <!-- TOP NAVBAR -->
+  <header class="bg-[#0d0e11] text-white sticky top-0 z-40 border-b border-neutral-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-2.5 group">
+        <div class="w-8 h-8 bg-limeBrand rounded-lg flex items-center justify-center text-black font-black text-xl transition-transform group-hover:scale-105">
+          G
+        </div>
+        <span class="text-xl tracking-tight text-white brand-font font-black italic">GarajeCOL</span>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
+        <a href="/" class="hover:text-white transition-colors pb-1 {% if request.path == '/' %}border-b-2 border-limeBrand text-white font-semibold{% else %}text-neutral-400{% endif %}">
+          Inicio
+        </a>
+        <a href="/motos" class="hover:text-white transition-colors pb-1 {% if request.path == '/motos' %}border-b-2 border-limeBrand text-white font-semibold{% else %}text-neutral-400{% endif %}">
+          Motos
+        </a>
+        <a href="/cascos" class="hover:text-white transition-colors pb-1 {% if request.path == '/cascos' %}border-b-2 border-limeBrand text-white font-semibold{% else %}text-neutral-400{% endif %}">
+          Cascos
+        </a>
+        <a href="/ropa-y-accesorios" class="hover:text-white transition-colors pb-1 {% if request.path == '/ropa-y-accesorios' %}border-b-2 border-limeBrand text-white font-semibold{% else %}text-neutral-400{% endif %}">
+          Ropa y accesorios
+        </a>
+        <a href="/repuestos" class="hover:text-white transition-colors pb-1 {% if request.path == '/repuestos' %}border-b-2 border-limeBrand text-white font-semibold{% else %}text-neutral-400{% endif %}">
+          Repuestos
+        </a>
+        <a href="/comparador" class="hover:text-white transition-colors pb-1 {% if '/comparador' in request.path %}border-b-2 border-limeBrand text-white font-semibold{% else %}text-neutral-400{% endif %}">
+          Comparador
+        </a>
+      </nav>
+
+      <!-- Right Action Icons & User -->
+      <div class="flex items-center space-x-4">
+        
+        <!-- Personalization Wizard Trigger -->
+        <a href="/personalizacion" class="hidden lg:flex items-center gap-1.5 text-xs font-bold text-limeBrand hover:text-white bg-neutral-900 border border-limeBrand/30 hover:border-limeBrand px-3 py-1.5 rounded-full transition-all">
+          <i class="fa-solid fa-sliders"></i>
+          <span>Filtrar por interés</span>
+        </a>
+
+        <!-- Search button -->
+        <button id="searchOpenBtn" class="text-neutral-400 hover:text-white transition-colors p-2 text-base" title="Buscar productos">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+
+        <!-- Favorites button -->
+        <a href="/favoritos" class="text-neutral-400 hover:text-white transition-colors p-2 text-base relative" title="Favoritos">
+          <i class="fa-regular fa-heart"></i>
+          <span id="favCountBadge" class="hidden absolute top-0.5 right-0.5 w-4 h-4 bg-limeBrand text-black text-[10px] font-bold rounded-full items-center justify-center">0</span>
+        </a>
+
+        <!-- Auth Button with Persistent Click Dropdown -->
+        {% if is_authenticated %}
+          <div class="relative" id="userMenuContainer">
+            <button id="userMenuBtn" type="button" class="border border-neutral-700 bg-neutral-900 text-white text-xs font-bold px-3 py-1.5 rounded uppercase tracking-wider flex items-center gap-2 hover:border-limeBrand transition-colors cursor-pointer">
+              <i class="fa-solid fa-user-circle text-limeBrand"></i>
+              <span>{{ current_user.name }}</span>
+              <i class="fa-solid fa-chevron-down text-[10px] text-neutral-400"></i>
+            </button>
+            <div id="userDropdown" class="hidden absolute right-0 mt-2 w-52 bg-[#181a20] border border-neutral-700 rounded-xl shadow-2xl py-2 z-50">
+              <div class="px-4 py-2 border-b border-neutral-800 text-[11px] text-neutral-400">
+                Conectado como <strong class="text-white block truncate">{{ current_user.email }}</strong>
+              </div>
+              <a href="/favoritos" class="flex items-center px-4 py-2.5 text-xs text-neutral-200 hover:bg-neutral-800 hover:text-limeBrand transition-colors">
+                <i class="fa-solid fa-heart mr-2.5 text-limeBrand"></i> Mis Favoritos
+              </a>
+              <a href="/comparador" class="flex items-center px-4 py-2.5 text-xs text-neutral-200 hover:bg-neutral-800 hover:text-limeBrand transition-colors">
+                <i class="fa-solid fa-code-compare mr-2.5 text-limeBrand"></i> Mis Comparaciones
+              </a>
+              <a href="/personalizacion" class="flex items-center px-4 py-2.5 text-xs text-neutral-200 hover:bg-neutral-800 hover:text-limeBrand transition-colors">
+                <i class="fa-solid fa-sliders mr-2.5 text-limeBrand"></i> Mi Perfil de Interés
+              </a>
+              <div class="border-t border-neutral-800 my-1"></div>
+              <a href="/api/auth/logout" class="flex items-center px-4 py-2 text-xs text-red-400 hover:bg-neutral-800 transition-colors">
+                <i class="fa-solid fa-arrow-right-from-bracket mr-2.5"></i> Cerrar sesión
+              </a>
+            </div>
+          </div>
+        {% else %}
+          <div class="relative" id="guestMenuContainer">
+            <a href="/login" class="border border-neutral-700 hover:border-limeBrand text-white text-xs font-semibold px-4 py-1.5 rounded uppercase tracking-wider transition-colors inline-block">
+              MI CUENTA
+            </a>
+          </div>
+        {% endif %}
+
+        <!-- Mobile Menu Toggle -->
+        <button id="mobileMenuBtn" class="md:hidden text-neutral-400 hover:text-white p-2">
+          <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Nav Menu -->
+    <div id="mobileMenu" class="hidden md:hidden bg-[#13151b] border-b border-neutral-800 px-4 pt-3 pb-4 space-y-2 text-sm">
+      <a href="/" class="block py-1.5 text-neutral-200 hover:text-limeBrand">Inicio</a>
+      <a href="/motos" class="block py-1.5 text-neutral-200 hover:text-limeBrand">Motos</a>
+      <a href="/cascos" class="block py-1.5 text-neutral-200 hover:text-limeBrand">Cascos</a>
+      <a href="/ropa-y-accesorios" class="block py-1.5 text-neutral-200 hover:text-limeBrand">Ropa y accesorios</a>
+      <a href="/repuestos" class="block py-1.5 text-neutral-200 hover:text-limeBrand">Repuestos</a>
+      <a href="/comparador" class="block py-1.5 text-neutral-200 hover:text-limeBrand">Comparador</a>
+      <a href="/personalizacion" class="block py-1.5 text-limeBrand font-bold">🎯 Filtrar por Interés y Presupuesto</a>
+      <a href="/favoritos" class="block py-1.5 text-neutral-200 hover:text-limeBrand">Mis Favoritos</a>
+    </div>
+  </header>
+
+  <!-- SEARCH OVERLAY MODAL -->
+  <div id="searchModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-start justify-center pt-24 px-4">
+    <div class="bg-[#13151b] border border-neutral-700 rounded-xl w-full max-w-2xl p-6 shadow-2xl relative">
+      <button id="searchCloseBtn" class="absolute top-4 right-4 text-neutral-400 hover:text-white text-lg">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <h3 class="text-white sport-heading text-lg mb-3">Buscar en GarajeCOL</h3>
+      <div class="relative">
+        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-neutral-500"></i>
+        <input type="text" id="globalSearchInput" placeholder="Buscar motos, cascos, chaquetas, repuestos (KTM, Brembo, AGV, Boxer, NKD)..." 
+               class="w-full bg-[#1e2029] border border-neutral-700 rounded-lg pl-10 pr-4 py-2.5 text-white placeholder-neutral-500 focus:outline-none focus:border-limeBrand">
+      </div>
+      <div id="searchResults" class="mt-4 max-h-72 overflow-y-auto space-y-2">
+        <p class="text-xs text-neutral-500">Escribe al menos 2 letras para buscar en todo el catálogo oficial.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN BODY CONTENT -->
+  <main class="flex-grow">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- FLOATING COMPARATOR BAR (STICKY AT BOTTOM) -->
+  <div id="floatingCompBar" class="fixed bottom-0 left-0 right-0 bg-[#0d0e11]/95 backdrop-blur border-t border-neutral-700 py-3 px-4 z-40 transform translate-y-full transition-transform duration-300 shadow-2xl">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="bg-limeBrand text-black text-xs font-black px-2 py-1 rounded">
+          <span id="compBadgeCount">0</span>/3
+        </div>
+        <div>
+          <span class="text-white text-xs font-bold uppercase tracking-wider">Productos en Comparador</span>
+          <p id="compItemList" class="text-neutral-400 text-xs truncate max-w-md">Ningún producto seleccionado</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="clearCompBtn" class="text-xs text-neutral-400 hover:text-red-400 px-3 py-1.5 transition-colors">
+          Vaciar
+        </button>
+        <a id="goToCompLink" href="/comparador" class="btn-garaje-lime px-4 py-2 rounded text-xs font-bold shadow-md">
+          Comparar ahora <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHATBOT BOTÓN FLOTANTE Y DRAWER (CÓDIGO DE TRÁNSITO IA) -->
+  <div class="fixed bottom-6 right-6 z-40">
+    <button id="openChatbotBtn" class="bg-limeBrand hover:bg-limeBrandHover text-black font-extrabold px-4 py-3 rounded-full shadow-2xl flex items-center gap-2.5 transform hover:scale-105 transition-all group">
+      <span class="relative flex h-3 w-3">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-black opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-3 w-3 bg-black"></span>
+      </span>
+      <i class="fa-solid fa-scale-balanced text-sm"></i>
+      <span class="text-xs uppercase tracking-wider font-black">Asesor Vial IA</span>
+    </button>
+  </div>
+
+  <!-- CHATBOT DRAWER MODAL -->
+  <div id="chatbotDrawer" class="fixed inset-y-0 right-0 w-full sm:w-[440px] bg-[#111216] border-l border-neutral-800 shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
+    <!-- Header -->
+    <div class="p-4 bg-[#0d0e11] border-b border-neutral-800 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-limeBrand text-black flex items-center justify-center font-black">
+          <i class="fa-solid fa-scale-balanced"></i>
+        </div>
+        <div>
+          <h3 class="text-white text-sm font-bold sport-heading">Asesor de Tránsito IA</h3>
+          <p class="text-[10px] text-neutral-400">Normativa para Motociclistas en Colombia</p>
+        </div>
+      </div>
+      <button id="closeChatbotBtn" class="text-neutral-400 hover:text-white p-1.5 text-lg">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- Official Sources Banner -->
+    <div class="bg-neutral-900 border-b border-neutral-800 px-4 py-2 flex items-center justify-between text-[11px] text-neutral-400">
+      <span><i class="fa-solid fa-shield-halved text-limeBrand mr-1"></i> Fuentes: MinTransporte & Ley 769</span>
+      <span class="text-limeBrand font-semibold">Oficial CO</span>
+    </div>
+
+    <!-- Chat Messages Box -->
+    <div id="chatMessages" class="flex-grow p-4 overflow-y-auto space-y-3 text-xs">
+      
+      <!-- Bot Welcome Message -->
+      <div class="flex gap-2.5 items-start">
+        <div class="w-6 h-6 rounded bg-limeBrand text-black flex-shrink-0 flex items-center justify-center text-[10px] font-bold">
+          G
+        </div>
+        <div class="bg-[#1c1e26] border border-neutral-700/60 rounded-xl p-3 text-neutral-200 leading-relaxed max-w-[85%]">
+          ¡Hola, piloto! Soy tu asesor vial inteligente en <strong>GarajeCOL</strong>. Respondo consultas sobre el <strong>Código Nacional de Tránsito de Colombia (Ley 769 de 2002)</strong>, resoluciones del Ministerio de Transporte (cascos Res. 20203040023385), SOAT, tecnomecánica, chalecos reflectivos y límites de velocidad de la Ley Julián Esteban.
+        </div>
+      </div>
+
+      <!-- Quick prompts -->
+      <div class="space-y-1.5 pt-2">
+        <p class="text-[10px] text-neutral-400 font-bold uppercase">Preguntas rápidas frecuentes:</p>
+        <button class="quick-prompt-btn block text-left w-full bg-[#181a20] hover:bg-neutral-800 border border-neutral-700/50 hover:border-limeBrand rounded-lg p-2 text-[11px] text-neutral-300 transition-colors">
+          ¿A qué hora es obligatorio el chaleco reflectivo?
+        </button>
+        <button class="quick-prompt-btn block text-left w-full bg-[#181a20] hover:bg-neutral-800 border border-neutral-700/50 hover:border-limeBrand rounded-lg p-2 text-[11px] text-neutral-300 transition-colors">
+          ¿Cuáles son las multas por llevar el casco desabrochado?
+        </button>
+        <button class="quick-prompt-btn block text-left w-full bg-[#181a20] hover:bg-neutral-800 border border-neutral-700/50 hover:border-limeBrand rounded-lg p-2 text-[11px] text-neutral-300 transition-colors">
+          ¿Las motos pagan peaje en Colombia?
+        </button>
+        <button class="quick-prompt-btn block text-left w-full bg-[#181a20] hover:bg-neutral-800 border border-neutral-700/50 hover:border-limeBrand rounded-lg p-2 text-[11px] text-neutral-300 transition-colors">
+          ¿Es legal mostrar el SOAT en el celular?
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Legal Disclaimer footer inside chatbot -->
+    <div class="px-4 py-1.5 bg-[#0d0e11] text-[10px] text-neutral-500 border-t border-neutral-800 italic">
+      Aviso: Herramienta orientativa y educativa. No sustituye asesoría jurídica formal.
+    </div>
+
+    <!-- Input Box -->
+    <div class="p-3 bg-[#0d0e11] border-t border-neutral-800">
+      <form id="chatForm" class="flex gap-2">
+        <input type="text" id="chatInput" placeholder="Haz una pregunta sobre normas de tránsito..." 
+               class="flex-grow bg-[#1c1e26] border border-neutral-700 rounded-lg px-3 py-2 text-white text-xs placeholder-neutral-500 focus:outline-none focus:border-limeBrand">
+        <button type="submit" class="bg-limeBrand hover:bg-limeBrandHover text-black font-bold px-3 py-2 rounded-lg text-xs transition-colors">
+          <i class="fa-solid fa-paper-plane"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-[#0d0e11] text-white border-t border-neutral-800 mt-16 pt-12 pb-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        
+        <div class="space-y-3">
+          <div class="flex items-center gap-2">
+            <div class="w-7 h-7 bg-limeBrand rounded flex items-center justify-center text-black font-black text-sm">G</div>
+            <span class="brand-font italic font-black text-lg text-white">GarajeCOL</span>
+          </div>
+          <p class="text-neutral-400 text-xs leading-relaxed">
+            Plataforma centralizada para la comunidad motociclista en Colombia. Catálogos oficiales, comparador técnico multivariable y asistente normativo de tránsito.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="text-white text-xs font-bold uppercase tracking-wider mb-3">Catálogos Oficiales</h4>
+          <ul class="space-y-2 text-xs text-neutral-400">
+            <li><a href="/motos" class="hover:text-limeBrand">Motos Urbanas, Enduro y Pista</a></li>
+            <li><a href="/cascos" class="hover:text-limeBrand">Cascos FIM y ECE 22.06</a></li>
+            <li><a href="/ropa-y-accesorios" class="hover:text-limeBrand">Chaquetas, Guantes y Monos</a></li>
+            <li><a href="/repuestos" class="hover:text-limeBrand">Frenos, Cadenas y Lubricantes</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-white text-xs font-bold uppercase tracking-wider mb-3">Herramientas</h4>
+          <ul class="space-y-2 text-xs text-neutral-400">
+            <li><a href="/comparador" class="hover:text-limeBrand">Comparador Técnico (Máx. 3)</a></li>
+            <li><a href="/personalizacion" class="hover:text-limeBrand">Filtro por Presupuesto e Interés</a></li>
+            <li><a href="javascript:void(0)" onclick="document.getElementById('openChatbotBtn').click()" class="hover:text-limeBrand">Asesor Vial de Tránsito (IA)</a></li>
+            <li><a href="/favoritos" class="hover:text-limeBrand">Mis Favoritos Guardados</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-white text-xs font-bold uppercase tracking-wider mb-3">Fuentes Oficiales</h4>
+          <ul class="space-y-2 text-xs text-neutral-400">
+            <li><a href="https://www.mintransporte.gov.co" target="_blank" rel="noopener" class="hover:text-limeBrand flex items-center gap-1.5"><i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> MinTransporte</a></li>
+            <li><a href="https://www.runt.gov.co" target="_blank" rel="noopener" class="hover:text-limeBrand flex items-center gap-1.5"><i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Portal RUNT</a></li>
+            <li><a href="https://ansv.gov.co" target="_blank" rel="noopener" class="hover:text-limeBrand flex items-center gap-1.5"><i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Agencia Seg. Vial (ANSV)</a></li>
+            <li><a href="https://www.supertransporte.gov.co" target="_blank" rel="noopener" class="hover:text-limeBrand flex items-center gap-1.5"><i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Supertransporte</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="border-t border-neutral-800 pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-neutral-500">
+        <p>© 2026 GarajeCOL. Proyecto Universitario Prototipo. Precios en Pesos Colombianos (COP).</p>
+        <p class="mt-2 md:mt-0">Desarrollado con arquitectura Python & Interfaz Web Responsiva.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/static/js/app.js"></script>
+  <script src="/static/js/comparator.js"></script>
+  <script src="/static/js/chatbot.js"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
